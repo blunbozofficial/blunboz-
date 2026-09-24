@@ -213,5 +213,26 @@ $('withdrawBtn').onclick=()=>{
 function logout(){localStorage.removeItem('blunboz_current_v2');currentUser=null;go('auth')}
 let saved=localStorage.getItem('blunboz_current_v2');if(saved){let users=getUsers();let u=users.find(x=>x.email===saved);if(u){currentUser=u;go('home')}}
 </script>
+ <!-- BLUNBOZ REFERRAL SYSTEM START -->
+<script>
+// 1. Save who invited this user
+const urlParams = new URLSearchParams(window.location.search);
+const refCode = urlParams.get('ref');
+if(refCode){
+  localStorage.setItem('blunboz_ref', refCode);
+  alert('🎉 You were invited by ' + refCode + '! Sign up to earn bonus USDT');
+}
+
+// 2. Function to give user their own invite link (call this on your dashboard)
+function getMyInviteLink(){
+  let myCode = localStorage.getItem('my_ref_code');
+  if(!myCode){
+    myCode = 'BLUN' + Math.floor(100 + Math.random()*900) + Math.floor(Math.random()*900);
+    localStorage.setItem('my_ref_code', myCode);
+  }
+  return 'https://blunboz.vercel.app?ref=' + myCode;
+}
+</script>
+<!-- BLUNBOZ REFERRAL SYSTEM END -->
 </body>
 </html>

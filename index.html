@@ -99,6 +99,17 @@
  </div>
  <div id="referScreen" class="hidden p-6">
    <h2 class="text-lg font-bold mb-5">Refer & Earn</h2>
+  <div id="inviteBox" style="background:#1a1f3d; border:2px solid #7c3aed; border-radius:16px; padding:16px; margin:12px 0;">
+  <h3>🔗 Your Invite Link</h3>
+  <input id="myLink" style="width:100%; padding:10px; background:#000; color:#fff; border-radius:8px; margin:8px 0; border:1px solid #333;" readonly />
+  <button onclick="navigator.clipboard.writeText(document.getElementById('myLink').value); this.innerText='✅ Copied!'; setTimeout(()=>this.innerText='COPY & SHARE TO WHATSAPP',2000);" style="width:100%; background:#25D366; color:#fff; padding:12px; border-radius:10px; font-weight:bold; border:none;">COPY & SHARE TO WHATSAPP</button>
+</div>
+<script>
+  setTimeout(()=>{
+    const link = getMyInviteLink();
+    document.getElementById('myLink').value = link;
+  },600);
+</script>
    <div class="card rounded-[24px] p-6">
      <p class="text-sm text-gray-400">Your referral link</p>
      <div class="mt-2 flex gap-2"><input id="refLink" class="flex-1 p-3 rounded-xl bg-[#1a1e35] text-xs" readonly><button onclick="copyRef()" class="px-4 rounded-xl btn-main text-xs font-bold">Copy</button></div>
@@ -233,17 +244,7 @@ function getMyInviteLink(){
   return 'https://blunboz.vercel.app?ref=' + myCode;
 }
 </script>
- <div id="inviteBox" style="background:#1a1f3d; border:2px solid #7c3aed; padding:15px; border-radius:12px; margin:20px; text-align:center; color:white;">
-  <h3>🔗 Your Invite Link</h3>
-  <input id="myLink" style="width:100%;padding:10px;margin:10px 0;background:#000;color:#7c3aed;border-radius:8px;text-align:center;" readonly>
-  <button onclick="navigator.clipboard.writeText(document.getElementById('myLink').value);alert('Copied! Now share to WhatsApp');" style="background:#7c3aed;color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;">COPY & SHARE TO WHATSAPP</button>
-</div>
-<script>
-  setTimeout(()=>{
-    const link = getMyInviteLink();
-    document.getElementById('myLink').value = link;
-  },600);
-</script>
+ 
 <!-- BLUNBOZ REFERRAL SYSTEM END -->
 </body>
 </html>

@@ -233,6 +233,17 @@ function getMyInviteLink(){
   return 'https://blunboz.vercel.app?ref=' + myCode;
 }
 </script>
+ <div id="inviteBox" style="background:#1a1f3d; border:2px solid #7c3aed; padding:15px; border-radius:12px; margin:20px; text-align:center; color:white;">
+  <h3>🔗 Your Invite Link</h3>
+  <input id="myLink" style="width:100%;padding:10px;margin:10px 0;background:#000;color:#7c3aed;border-radius:8px;text-align:center;" readonly>
+  <button onclick="navigator.clipboard.writeText(document.getElementById('myLink').value);alert('Copied! Now share to WhatsApp');" style="background:#7c3aed;color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:bold;">COPY & SHARE TO WHATSAPP</button>
+</div>
+<script>
+  setTimeout(()=>{
+    const link = getMyInviteLink();
+    document.getElementById('myLink').value = link;
+  },600);
+</script>
 <!-- BLUNBOZ REFERRAL SYSTEM END -->
 </body>
 </html>

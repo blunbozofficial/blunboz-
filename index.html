@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLUNBOZ - Watch & Earn USDT</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+ body{font-family:'Inter',sans-serif;background:#0a0a0f;color:white}
+.glass{background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)}
+.gradient-text{background:linear-gradient(90deg,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.btn-gradient{background:linear-gradient(90deg,#8b5cf6,#ec4899)}
+</style>
+</head>
+<body>
+<div id="app" class="max-w-[430px] mx-auto min-h-screen bg-[#0f0f14] pb-20">
+  <div id="authScreen" class="p-6 pt-16">
+    <h1 class="text-4xl font-extrabold gradient-text text-center mb-2">BLUNBOZ</h1>
+    <p class="text-center text-gray-400 mb-8">Watch Ads, Earn USDT</p>
+    <div class="glass rounded-2xl p-6">
+      <div class="flex gap-2 mb-6">
+        <button id="tabSignIn" class="flex-1 py-2 rounded-full btn-gradient font-semibold">Sign In</button>
+        <button id="tabSignUp" class="flex-1 py-2 rounded-full bg-white/10">Create Account</button>
+      </div>
+      <input id="email" type="email" placeholder="Email" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 mb-3 outline-none">
+      <input id="password" type="password" placeholder="Password" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 mb-3 outline-none">
+      <input id="wallet" type="text" placeholder="USDT TRC20 Address" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 mb-4 outline-none hidden">
+      <p id="message" class="text-sm text-center mb-3 text-red-400"></p>
+      <button id="authBtn" class="w-full py-3 rounded-xl btn-gradient font-bold">Sign In</button>
+    </div>
+  </div>
+  <div id="homeScreen" class="hidden">
+    <div class="flex justify-between items-center p-5">
+      <h1 class="text-2xl font-extrabold gradient-text">BLUNBOZ</h1>
+      <div class="flex items-center gap-3">
+        <div class="glass px-3 py-1 rounded-full text-sm"><span id="points">2450</span> Points</div>
+        <div id="avatar" class="w-8 h-8 rounded-full btn-gradient flex items-center justify-center font-bold">B</div>
+      </div>
+    </div>
+    <div class="p-5">
+      <div class="glass rounded-2xl p-5 mb-5">
+        <p class="text-gray-400 text-sm">Total Balance</p>
+        <h2 class="text-3xl font-bold">$<span id="usdtBalance">0.00</span> <span class="text-sm text-gray-400">USDT</span></h2>
+        <div class="flex gap-2 mt-4">
+          <button onclick="go('earn')" class="flex-1 py-2 rounded-xl btn-gradient text-sm font-semibold">Watch Ad</button>
+          <button onclick="go('wallet')" class="flex-1 py-2 rounded-xl bg-white/10 text-sm">Withdraw</button>
+        </div>
+      </div>
+      <h3 class="font-semibold mb-3">Today's Tasks</h3>
+      <div class="glass rounded-xl p-4 flex justify-between items-center">
+        <div><p class="font-semibold">Watch 5 Ads</p><p class="text-xs text-gray-400">Earn 500 Points</p></div>
+        <button onclick="go('earn')" class="px-4 py-2 rounded-full btn-gradient text-sm">Start</button>
+      </div>
+    </div>
+  </div>
+  <div id="earnScreen" class="hidden p-5">
+    <h2 class="text-xl font-bold mb-5">Watch & Earn</h2>
+    <div class="glass rounded-2xl p-6 text-center">
+      <div class="w-20 h-20 mx-auto rounded-full bg-white/5 flex items-center justify-center mb-4 text-3xl">▶</div>
+      <h3 class="font-semibold mb-2">Watch Ad (30s)</h3>
+      <p class="text-sm text-gray-400 mb-4">Reward: 100 Points = $0.01 USDT</p>
+      <div id="timer" class="text-3xl font-bold mb-4 hidden">30s</div>
+      <button id="watchBtn" class="w-full py-3 rounded-xl btn-gradient font-bold">Watch Now</button>
+      <p id="earnMsg" class="text-sm mt-3 text-green-400"></p>
+    </div>
+    <button onclick="go('home')" class="w-full mt-6 py-3 rounded-xl bg-white/10">Back Home</button>
+  </div>
+  <div id="walletScreen" class="hidden p-5">
+    <h2 class="text-xl font-bold mb-5">Wallet</h2>
+    <div class="glass rounded-2xl p-5">
+      <p class="text-sm text-gray-400">USDT Balance</p>
+      <h2 class="text-2xl font-bold mb-3">$<span id="usdtBalance2">0.00</span></h2>
+      <input id="withdrawWallet" type="text" placeholder="Your USDT TRC20 address" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 mb-3 outline-none">
+      <input id="withdrawAmount" type="number" placeholder="Min $1.00" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 mb-3 outline-none">
+      <button id="withdrawBtn" class="w-full py-3 rounded-xl btn-gradient font-bold">Withdraw</button>
+      <p id="walletMsg" class="text-sm mt-3 text-center"></p>
+      <p class="text-xs text-gray-500 mt-4 text-center">100 Points = $0.01 | 10000 Points = $1.00 USDT</p>
+    </div>
+    <button onclick="go('home')" class="w-full mt-6 py-3 rounded-xl bg-white/10">Back Home</button>
+    <button onclick="logout()" class="w-full mt-3 py-2 text-sm text-red-400">Logout</button>
+  </div>
+</div>
+<script>
+let currentUser=null;const $=id=>document.getElementById(id);
+function getUsers(){return JSON.parse(localStorage.getItem('blunboz_users')||'[]')}
+function saveUsers(u){localStorage.setItem('blunboz_users',JSON.stringify(u))}
+function go(page){['authScreen','homeScreen','earnScreen','walletScreen'].forEach(s=>$(s).classList.add('hidden'));if(page==='home')$('homeScreen').classList.remove('hidden');else if(page==='earn')$('earnScreen').classList.remove('hidden');else if(page==='wallet')$('walletScreen').classList.remove('hidden');else $('authScreen').classList.remove('hidden');if(currentUser)updateUI();}
+function updateUI(){if(!currentUser)return;$('points').textContent=currentUser.points;let usdt=(currentUser.points/10000).toFixed(2);$('usdtBalance').textContent=usdt;$('usdtBalance2').textContent=usdt;$('avatar').textContent=currentUser.email[0].toUpperCase();}
+let isSignUp=false;
+$('tabSignIn').onclick=()=>{isSignUp=false;$('tabSignIn').className='flex-1 py-2 rounded-full btn-gradient font-semibold';$('tabSignUp').className='flex-1 py-2 rounded-full bg-white/10';$('authBtn').textContent='Sign In';$('wallet').classList.add('hidden');};
+$('tabSignUp').onclick=()=>{isSignUp=true;$('tabSignUp').className='flex-1 py-2 rounded-full btn-gradient font-semibold';$('tabSignIn').className='flex-1 py-2 rounded-full bg-white/10';$('authBtn').textContent='Create Account';$('wallet').classList.remove('hidden');};
+$('authBtn').onclick=()=>{const email=$('email').value.trim().toLowerCase();const pass=$('password').value.trim();const wallet=$('wallet').value.trim();const msg=$('message');if(!email||!pass){msg.textContent='Fill email and password';return;}let users=getUsers();if(isSignUp){if(users.find(u=>u.email===email)){msg.textContent='Account already exists, Sign in';return;}if(!wallet){msg.textContent='Add USDT TRC20 address';return;}let newUser={email,pass,wallet,points:2450};users.push(newUser);saveUsers(users);currentUser=newUser;localStorage.setItem('blunboz_current',email);msg.textContent='Account created! Signed in successfully!';msg.className='text-sm text-center mb-3 text-green-400';setTimeout(()=>go('home'),800);}else{let user=users.find(u=>u.email===email&&u.pass===pass);if(!user){msg.textContent='Wrong email or password';return;}currentUser=user;localStorage.setItem('blunboz_current',email);msg.textContent='Signed in successfully!';msg.className='text-sm text-center mb-3 text-green-400';setTimeout(()=>go('home'),500);}};
+$('watchBtn').onclick=()=>{let btn=$('watchBtn');let timerEl=$('timer');let msg=$('earnMsg');let time=30;btn.disabled=true;timerEl.classList.remove('hidden');msg.textContent='';let interval=setInterval(()=>{timerEl.textContent=time+'s';time--;if(time<0){clearInterval(interval);timerEl.classList.add('hidden');btn.disabled=false;currentUser.points+=100;let users=getUsers();let idx=users.findIndex(u=>u.email===currentUser.email);users[idx]=currentUser;saveUsers(users);updateUI();msg.textContent='✓ +100 Points added!';}},1000);};
+$('withdrawBtn').onclick=()=>{let amt=parseFloat($('withdrawAmount').value);let addr=$('withdrawWallet').value.trim()||currentUser.wallet;let msg=$('walletMsg');let bal=currentUser.points/10000;if(!addr){msg.textContent='Add TRC20 address';msg.className='text-sm mt-3 text-center text-red-400';return;}if(isNaN(amt)||amt<1){msg.textContent='Minimum is $1.00 (10000 Points)';msg.className='text-sm mt-3 text-center text-red-400';return;}if(amt>bal){msg.textContent='Insufficient balance';msg.className='text-sm mt-3 text-center text-red-400';return;}currentUser.points-=amt*10000;let users=getUsers();let idx=users.findIndex(u=>u.email===currentUser.email);users[idx]=currentUser;saveUsers(users);updateUI();msg.textContent=`Withdrawal request of $${amt} to ${addr.slice(0,6)}... sent!`;msg.className='text-sm mt-3 text-center text-green-400';};
+function logout(){localStorage.removeItem('blunboz_current');currentUser=null;go('auth');}
+let saved=localStorage.getItem('blunboz_current');if(saved){let users=getUsers();let u=users.find(x=>x.email===saved);if(u){currentUser=u;go('home');}}
+</script>
+</body>
+  </html>

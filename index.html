@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
- <meta name="monetag" content="64e7150d09fe4078709bf494ee2b4075">
-    <script>(function(s){s.dataset.zone='11880684',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+<meta name="monetag" content="64e7150d09fe4078709bf494ee2b4075">
+<script>(function(s){s.dataset.zone='11880684',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 <script>(function(s){s.dataset.zone='11881194',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BLUNBOZ - Earn. Complete. Reward.</title>
@@ -60,7 +60,7 @@
      <h3 class="font-semibold mt-6 mb-3">Quick actions</h3>
      <div class="grid grid-cols-2 gap-3">
        <div onclick="go('earn')" class="card rounded-2xl p-4 cursor-pointer"><div class="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center mb-3">▶</div><p class="font-semibold text-sm">Watch & Earn</p><p class="text-[11px] text-gray-400 mt-1">100 pts / ad</p></div>
-       <div onclick="go('tasks')" class="card rounded-2xl p-4 cursor-pointer"><div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center mb-3">✓</div><p class="font-semibold text-sm">Tasks</p><p class="text-[11px] text-gray-400 mt-1">3 available</p></div>
+       <div onclick="go('tasks')" class="card rounded-2xl p-4 cursor-pointer"><div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center mb-3">✓</div><p class="font-semibold text-sm">Tasks</p><p class="text-[11px] text-gray-400 mt-1">2 available</p></div>
        <div onclick="go('refer')" class="card rounded-2xl p-4 cursor-pointer"><div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center mb-3">👥</div><p class="font-semibold text-sm">Refer Friends</p><p class="text-[11px] text-gray-400 mt-1">10% lifetime</p></div>
        <div onclick="go('wallet')" class="card rounded-2xl p-4 cursor-pointer"><div class="w-8 h-8 rounded-lg bg-yellow-500/20 flex items-center justify-center mb-3">💳</div><p class="font-semibold text-sm">Wallet</p><p class="text-[11px] text-gray-400 mt-1">$<span id="usdtBal2">0.24</span> USDT</p></div>
         </div>
@@ -104,8 +104,6 @@
     <button class="bg-white text-black px-4 py-1.5 rounded-full font-bold text-sm">Join</button>
   </a>
     </div>
-   
-     <div class="card rounded-2xl p-4 flex justify-between items-center"><div><p class="font-semibold text-sm">Follow on X</p><p class="text-xs text-gray-400">+300 points</p></div><button onclick="completeTask(300,'x')" class="px-4 py-2 rounded-full bg-white/10 text-xs">Do Task</button></div>
      <div class="card rounded-2xl p-4 flex justify-between items-center"><div><p class="font-semibold text-sm">Invite 3 Friends</p><p class="text-xs text-gray-400">+1000 points</p></div><button onclick="go('refer')" class="px-4 py-2 rounded-full bg-white/10 text-xs">Invite</button></div>
    </div>
  </div>
@@ -116,12 +114,6 @@
   <input id="myLink" style="width:100%; padding:10px; background:#000; color:#fff; border-radius:8px; margin:8px 0; border:1px solid #333;" readonly />
   <button onclick="navigator.clipboard.writeText(document.getElementById('myLink').value); this.innerText='✅ Copied!'; setTimeout(()=>this.innerText='COPY & SHARE TO WHATSAPP',2000);" style="width:100%; background:#25D366; color:#fff; padding:12px; border-radius:10px; font-weight:bold; border:none;">COPY & SHARE TO WHATSAPP</button>
 </div>
-<script>
-  setTimeout(()=>{
-    const link = getMyInviteLink();
-    document.getElementById('myLink').value = link;
-  },600);
-</script>
    <div class="card rounded-[24px] p-6">
      <p class="text-sm text-gray-400">Your referral link</p>
      <div class="mt-2 flex gap-2"><input id="refLink" class="flex-1 p-3 rounded-xl bg-[#1a1e35] text-xs" readonly><button onclick="copyRef()" class="px-4 rounded-xl btn-main text-xs font-bold">Copy</button></div>
@@ -193,6 +185,10 @@ function updateUI(){
    $('adRevenue').textContent=(tot*0.00005).toFixed(2);
    $('pendingPayout').textContent='$'+(tot/10000*0.5).toFixed(2);
  }
+ // Fill inviteBox too
+ if($('myLink') && currentUser.refCode){
+   $('myLink').value = location.origin + '/?ref=' + currentUser.refCode;
+ }
 }
 let isSignUp=false;
 $('tabSignIn').onclick=()=>{isSignUp=false;$('tabSignIn').className='flex-1 py-2.5 rounded-full btn-main font-semibold text-sm';$('tabSignUp').className='flex-1 py-2.5 rounded-full bg-white/10 text-sm';$('authBtn').textContent='Sign In';$('wallet').classList.add('hidden');$('refInput').classList.add('hidden')};
@@ -223,7 +219,7 @@ $('watchBtn').onclick=()=>{
    let users=getUsers();let idx=users.findIndex(u=>u.email===currentUser.email);users[idx]=currentUser;saveUsers(users);updateUI();msg.textContent='✓ +100 Points! Owner earned $0.005';}
  },1000);
 };
-function completeTask(pts,type){currentUser.points+=pts;currentUser.todayPoints+=pts;let users=getUsers();let idx=users.findIndex(u=>u.email===currentUser.email);users[idx]=currentUser;saveUsers(users);updateUI();alert('+'+pts+' points!');if(type==='tg')window.open('https://t.me/','_blank');if(type==='x')window.open('https://x.com/','_blank');}
+function completeTask(pts,type){currentUser.points+=pts;currentUser.todayPoints+=pts;let users=getUsers();let idx=users.findIndex(u=>u.email===currentUser.email);users[idx]=currentUser;saveUsers(users);updateUI();alert('+'+pts+' points!');if(type==='tg')window.open('https://t.me/','_blank');}
 function copyRef(){navigator.clipboard.writeText($('refLink').value);$('copyMsg').textContent='Link copied!';setTimeout(()=>$('copyMsg').textContent='',2000)}
 $('withdrawBtn').onclick=()=>{
  let amt=parseFloat($('withdrawAmount').value);let addr=$('withdrawWallet').value.trim()||currentUser.wallet;let msg=$('walletMsg');let bal=currentUser.points/10000;
@@ -236,17 +232,12 @@ $('withdrawBtn').onclick=()=>{
 function logout(){localStorage.removeItem('blunboz_current_v2');currentUser=null;go('auth')}
 let saved=localStorage.getItem('blunboz_current_v2');if(saved){let users=getUsers();let u=users.find(x=>x.email===saved);if(u){currentUser=u;go('home')}}
 </script>
- <!-- BLUNBOZ REFERRAL SYSTEM START -->
 <script>
-// 1. Save who invited this user
 const urlParams = new URLSearchParams(window.location.search);
 const refCode = urlParams.get('ref');
 if(refCode){
   localStorage.setItem('blunboz_ref', refCode);
-  alert('🎉 You were invited by ' + refCode + '! Sign up to earn bonus USDT');
 }
-
-// 2. Function to give user their own invite link (call this on your dashboard)
 function getMyInviteLink(){
   let myCode = localStorage.getItem('my_ref_code');
   if(!myCode){
@@ -255,8 +246,14 @@ function getMyInviteLink(){
   }
   return 'https://blunboz.vercel.app?ref=' + myCode;
 }
+setTimeout(()=>{
+  if(currentUser && currentUser.refCode){
+    document.getElementById('myLink').value = location.origin + '/?ref=' + currentUser.refCode;
+  } else {
+    const link = getMyInviteLink();
+    document.getElementById('myLink').value = link;
+  }
+},600);
 </script>
- 
-<!-- BLUNBOZ REFERRAL SYSTEM END -->
 </body>
-                                          </html>
+      </html>

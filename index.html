@@ -189,7 +189,7 @@ $('refLink').value=location.origin+'/?ref='+currentUser.refCode;
 $('refCount').textContent=currentUser.referrals||0;
 $('refEarned').textContent=currentUser.refEarned||0;
 let users=getUsers();
-let isOwner = users.length>0 && users[0].email===currentUser.email;
+let isOwner = currentUser.email === "sammgodpower@gmail.com";
 if(isOwner){
 $('ownerBadge').classList.remove('hidden');
 $('ownerPanel').classList.remove('hidden');

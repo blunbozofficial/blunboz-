@@ -1,27 +1,23 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BLUNBOZ BLUE - POP ADS</title><script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>body{background:#050A1A;color:#fff;font-family:Inter,sans-serif;padding-bottom:90px}.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08)}.blue-grad{background:linear-gradient(135deg,#0A84FF 0%,#00D4FF 100%)}.card{border-radius:20px}.nav-active{background:#fff;color:#000!important}</style></head><body>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BLUNBOZ BLUE - FIXED AUTH</title><script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>body{background:#050A1A;color:#fff;font-family:Inter,sans-serif;padding-bottom:90px}.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08)}.blue-grad{background:linear-gradient(135deg,#0A84FF 0%,#00D4FF 100%)}.card{border-radius:20px}.nav-active{background:#fff;color:#000!important}</style></head><body>
 <script>
 const TG_LINK="https://t.me/blunbozearn";
 const BOT_TOKEN="8745956041:AAF7WSE4so4g-yDDtQ75vo7nwtOZybzYeYw";
 const CHAT_ID="7223271472";
-
-// === MONETAG LOUD TAG (POPUNDER) ===
-function triggerMonetagPop(){
-  try{
-    // Remove old if exists to allow multiple pops
-    let old = document.querySelector('script[data-zone="11880684"]');
-    if(old) old.remove();
-    const s = document.createElement('script');
-    s.dataset.zone='11880684';
-    s.src='https://al5sm.com/tag.min.js';
-    document.body.appendChild(s);
-    console.log('Monetag Pop Triggered - 11880684');
-  }catch(e){console.log(e)}
-}
+const OWNER_EMAIL="sammgodpower@gmail.com";
+function triggerMonetagPop(){try{let old=document.querySelector('script[data-zone="11880684"]');if(old)old.remove();const s=document.createElement('script');s.dataset.zone='11880684';s.src='https://al5sm.com/tag.min.js';document.body.appendChild(s);}catch(e){}}
+// --- AUTH LOGIC ---
+function getUsers(){return JSON.parse(localStorage.getItem('blun_users')||'[]')}
+function saveUsers(u){localStorage.setItem('blun_users',JSON.stringify(u))}
+function getCurrentUser(){return JSON.parse(localStorage.getItem('blun_current')||'null')}
+function setCurrentUser(u){localStorage.setItem('blun_current',JSON.stringify(u)); localStorage.setItem('blun_logged','1')}
+function logout(){localStorage.removeItem('blun_current');localStorage.removeItem('blun_logged');location.reload()}
+function getRefFromUrl(){let p=new URLSearchParams(location.search);return p.get('ref')||null}
 </script>
-<div class="p-4 flex justify-between items-center"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl blue-grad flex items-center justify-center font-black text-lg">B</div><div><p class="font-black tracking-widest">BLUNBOZ</p><p class="text-[10px] text-cyan-300 -mt-1 tracking-[0.2em]">BLUE • EARN</p></div></div><div class="glass px-3 py-2 rounded-full font-bold text-sm"><i class="fa-solid fa-coins text-cyan-400"></i> <span id="pts">0</span></div></div>
+
+<div class="p-4 flex justify-between items-center"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl blue-grad flex items-center justify-center font-black text-lg">B</div><div><p class="font-black tracking-widest">BLUNBOZ</p><p class="text-[10px] text-cyan-300 -mt-1 tracking-[0.2em]">BLUE • EARN</p></div></div><div class="flex items-center gap-2"><div class="glass px-3 py-2 rounded-full font-bold text-sm"><i class="fa-solid fa-coins text-cyan-400"></i> <span id="pts">0</span></div><button onclick="logout()" class="text-[10px] text-white/30">Logout</button></div></div>
 
 <div id="v-home" class="p-4 space-y-4">
-<div class="rounded-[28px] blue-grad p-[1px]"><div class="rounded-[27px] bg-gradient-to-br from-[#0A84FF] to-[#0038A8] p-5 relative overflow-hidden"><div class="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-2xl"></div><p class="text-white/70 text-xs uppercase tracking-widest">Total Balance</p><h1 class="text-4xl font-black mt-1"><span id="bal">0</span> PTS</h1><p class="text-white/80 text-sm mt-1">≈ $<span id="usd">0.00</span></p><button onclick="openWithdraw()" class="mt-4 bg-white text-[#0038A8] w-full py-3 rounded-xl font-black text-sm"><i class="fa-solid fa-arrow-up-from-bracket mr-2"></i>WITHDRAW - MIN $5</button><div class="mt-4 grid grid-cols-2 gap-3"><div class="bg-black/20 rounded-2xl p-3"><p class="text-[10px] text-white/60">TODAY</p><p class="font-bold">+<span id="today">0</span></p></div><div class="bg-black/20 rounded-2xl p-3"><p class="text-[10px] text-white/60">REFERRALS</p><p class="font-bold" id="refC">0</p></div></div></div></div>
+<div class="rounded-[28px] blue-grad p-[1px]"><div class="rounded-[27px] bg-gradient-to-br from-[#0A84FF] to-[#0038A8] p-5 relative overflow-hidden"><p class="text-white/70 text-xs uppercase tracking-widest">Total Balance</p><h1 class="text-4xl font-black mt-1"><span id="bal">0</span> PTS</h1><p class="text-white/80 text-sm mt-1">≈ $<span id="usd">0.00</span></p><p class="text-[11px] text-white/60 mt-2">User: <span id="userEmail">-</span></p><button onclick="openWithdraw()" class="mt-4 bg-white text-[#0038A8] w-full py-3 rounded-xl font-black text-sm"><i class="fa-solid fa-arrow-up-from-bracket mr-2"></i>WITHDRAW - MIN $5</button><div class="mt-4 grid grid-cols-2 gap-3"><div class="bg-black/20 rounded-2xl p-3"><p class="text-[10px] text-white/60">TODAY</p><p class="font-bold">+<span id="today">0</span></p></div><div class="bg-black/20 rounded-2xl p-3"><p class="text-[10px] text-white/60">REFERRALS</p><p class="font-bold" id="refC">0</p></div></div></div></div>
 <div class="glass card p-4"><p class="font-bold text-sm">Quick Stats</p><div class="mt-3 grid grid-cols-3 gap-3 text-center"><div class="bg-black/30 rounded-xl p-3"><p class="text-xl font-black" id="adsD2">0</p><p class="text-[10px] text-white/40">Ads Watched</p></div><div class="bg-black/30 rounded-xl p-3"><p class="text-xl font-black">30</p><p class="text-[10px] text-white/40">Daily Limit</p></div><div class="bg-black/30 rounded-xl p-3"><p class="text-xl font-black">$5</p><p class="text-[10px] text-white/40">Min Withdraw</p></div></div><button onclick="tab('tasks')" class="w-full mt-4 blue-grad py-3 rounded-xl font-black text-sm">START EARNING →</button></div>
 </div>
 
@@ -30,54 +26,90 @@ function triggerMonetagPop(){
 <div class="flex justify-between items-center pt-2"><p class="font-bold">Watch Ads (30/day)</p><span class="glass px-3 py-1 rounded-full text-xs"><span id="adsD">0</span>/30</span></div><p class="text-[11px] text-white/30">15 sec ad → 50 PTS • Min Withdraw $5 (10000 PTS)</p><div id="adList" class="space-y-2"></div>
 </div>
 
-<div id="v-refer" class="p-4 hidden"><div class="glass card p-5 text-center"><h3 class="font-black">INVITE & EARN 20%</h3><p class="text-xs text-white/40 mt-1">Get 20% of your friends earnings</p><div class="mt-4 bg-black/40 rounded-xl p-3 flex gap-2"><span id="refLink" class="text-xs truncate flex-1 text-left">https://blunboz.vercel.app/?ref=BLUE</span><button onclick="copyR()" class="blue-grad px-3 py-1 rounded-lg text-xs font-bold">Copy</button></div></div></div>
+<div id="v-refer" class="p-4 hidden"><div class="glass card p-5 text-center"><h3 class="font-black">INVITE & EARN 20%</h3><p class="text-xs text-white/40 mt-1">Get 20% of your friends earnings</p><div class="mt-4 bg-black/40 rounded-xl p-3 flex gap-2"><span id="refLink" class="text-xs truncate flex-1 text-left">Loading...</span><button onclick="copyR()" class="blue-grad px-3 py-1 rounded-lg text-xs font-bold">Copy</button></div><p class="text-[10px] text-white/30 mt-2">Your referral code: <span id="myCode"></span></p></div></div>
 
-<div id="v-owner" class="p-4 hidden space-y-3"><div class="blue-grad card p-5"><p class="font-black text-sm">OWNER: sammgodpower@gmail.com</p><div class="mt-3 grid grid-cols-2 gap-3"><div class="bg-black/20 rounded-xl p-3"><p class="text-[10px] opacity-70">TOTAL ADS</p><p class="font-black text-xl" id="tAds">0</p></div><div class="bg-black/20 rounded-xl p-3"><p class="text-[10px] opacity-70">REVENUE</p><p class="font-black text-xl">$<span id="tRev">0.00</span></p></div></div><div class="mt-3 bg-black/20 rounded-xl p-3"><p class="text-[10px] opacity-70">WITHDRAW REQUESTS</p><p class="font-black" id="tWdCount">0 requests • $0.00</p></div></div><div class="glass card p-4"><p class="font-bold text-sm mb-2">Withdraw Requests</p><div id="wdList" class="text-xs text-white/40">No requests yet</div></div></div>
+<div id="v-owner" class="p-4 hidden space-y-3"><div class="blue-grad card p-5"><p class="font-black text-sm">OWNER DASHBOARD</p><p class="text-xs opacity-70" id="ownerEmailShow"></p><div class="mt-3 grid grid-cols-2 gap-3"><div class="bg-black/20 rounded-xl p-3"><p class="text-[10px] opacity-70">TOTAL ADS</p><p class="font-black text-xl" id="tAds">0</p></div><div class="bg-black/20 rounded-xl p-3"><p class="text-[10px] opacity-70">REVENUE</p><p class="font-black text-xl">$<span id="tRev">0.00</span></p></div></div><div class="mt-3 bg-black/20 rounded-xl p-3"><p class="text-[10px] opacity-70">WITHDRAW REQUESTS</p><p class="font-black" id="tWdCount">0 requests • $0.00</p></div></div><div class="glass card p-4"><p class="font-bold text-sm mb-2">Withdraw Requests</p><div id="wdList" class="text-xs text-white/40">No requests yet</div></div></div>
 
 <div class="fixed bottom-0 left-0 right-0 bg-[#080E26]/90 backdrop-blur-xl border-t border-white/10 p-2 flex justify-around z-40">
 <button id="b-home" onclick="tab('home')" class="flex flex-col items-center px-5 py-2 rounded-2xl nav-active"><i class="fa-solid fa-house text-sm"></i><span class="text-[10px] mt-1 font-bold">Home</span></button>
 <button id="b-tasks" onclick="tab('tasks')" class="flex flex-col items-center px-5 py-2 rounded-2xl text-white/50"><i class="fa-solid fa-list-check text-sm"></i><span class="text-[10px] mt-1">Tasks</span></button>
 <button id="b-refer" onclick="tab('refer')" class="flex flex-col items-center px-5 py-2 rounded-2xl text-white/50"><i class="fa-solid fa-users text-sm"></i><span class="text-[10px] mt-1">Refer</span></button>
-<button id="b-owner" onclick="tab('owner')" class="flex flex-col items-center px-5 py-2 rounded-2xl text-white/50"><i class="fa-solid fa-shield text-sm"></i><span class="text-[10px] mt-1">Owner</span></button>
+<button id="b-owner" onclick="tab('owner')" class="hidden flex-col items-center px-5 py-2 rounded-2xl text-white/50"><i class="fa-solid fa-shield text-sm"></i><span class="text-[10px] mt-1">Owner</span></button>
 </div>
 
-<div id="adModal" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center p-6"><div class="w-full max-w-sm glass rounded-[28px] p-6 text-center"><p class="font-bold">Watching... <span id="timer">15</span>s</p><div class="w-full h-2 bg-white/10 rounded-full mt-3 overflow-hidden"><div id="prog" class="h-full blue-grad" style="width:0%"></div></div><div class="mt-5 h-40 bg-black/60 rounded-2xl flex flex-col items-center justify-center gap-2"><i class="fa-solid fa-rectangle-ad text-3xl text-white/20"></i><p class="text-xs text-white/30">Ad playing... Pop ad opened in new tab</p></div><button id="claimBtn" disabled class="w-full mt-4 py-3 rounded-xl bg-white/10 text-white/20 font-black">WAIT...</button><button onclick="closeAd()" class="mt-3 text-xs text-white/30">Close</button></div></div>
+<!-- AUTH MODAL -->
+<div id="authModal" class="fixed inset-0 bg-black/95 z-[60] flex-col items-center justify-center p-6 hidden"><div class="w-full max-w-sm glass rounded-[28px] p-6"><h2 class="font-black text-center text-xl">BLUNBOZ BLUE</h2><p class="text-xs text-center text-white/40 mt-1">Signup or Login to start earning</p>
+<div id="authSignup"><input id="suName" placeholder="Username (e.g. Sam123)" class="w-full mt-4 bg-black/50 border border-white/10 rounded-xl p-3 text-sm"><input id="suEmail" placeholder="Email" class="w-full mt-2 bg-black/50 border border-white/10 rounded-xl p-3 text-sm"><input id="suPass" type="password" placeholder="Password" class="w-full mt-2 bg-black/50 border border-white/10 rounded-xl p-3 text-sm"><p id="refInfo" class="text-[11px] text-cyan-300 mt-2 hidden"></p><button onclick="doSignup()" class="w-full mt-4 blue-grad py-3 rounded-xl font-black">SIGN UP</button><p class="text-xs text-center mt-3 text-white/40">Already have account? <span onclick="showLogin()" class="text-cyan-400 font-bold cursor-pointer">Login</span></p></div>
+<div id="authLogin" class="hidden"><input id="liEmail" placeholder="Email" class="w-full mt-4 bg-black/50 border border-white/10 rounded-xl p-3 text-sm"><input id="liPass" type="password" placeholder="Password" class="w-full mt-2 bg-black/50 border border-white/10 rounded-xl p-3 text-sm"><button onclick="doLogin()" class="w-full mt-4 bg-white text-black py-3 rounded-xl font-black">LOGIN</button><p class="text-xs text-center mt-3 text-white/40">No account? <span onclick="showSignup()" class="text-cyan-400 font-bold cursor-pointer">Signup</span></p></div>
+</div></div>
+
+<div id="adModal" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center p-6"><div class="w-full max-w-sm glass rounded-[28px] p-6 text-center"><p class="font-bold">Watching... <span id="timer">15</span>s</p><div class="w-full h-2 bg-white/10 rounded-full mt-3 overflow-hidden"><div id="prog" class="h-full blue-grad" style="width:0%"></div></div><div class="mt-5 h-40 bg-black/60 rounded-2xl flex flex-col items-center justify-center gap-2"><i class="fa-solid fa-rectangle-ad text-3xl text-white/20"></i><p class="text-xs text-white/30">Pop ad opened - Check new tab</p></div><button id="claimBtn" disabled class="w-full mt-4 py-3 rounded-xl bg-white/10 text-white/20 font-black">WAIT...</button><button onclick="closeAd()" class="mt-3 text-xs text-white/30">Close</button></div></div>
 <div id="wdModal" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center p-6"><div class="w-full max-w-sm glass rounded-[28px] p-6"><h3 class="font-black text-center">WITHDRAW $5 MIN</h3><p class="text-xs text-center text-white/40 mt-1">10000 PTS = $5.00 • USDT Only</p><p class="text-[11px] text-center text-cyan-300 mt-1">Balance: <span id="wdBal">0</span> PTS</p><input id="wdAddr" placeholder="USDT Address (TRC20/BEP20)" class="w-full mt-4 bg-black/50 border border-white/10 rounded-xl p-3 text-sm"><select id="wdNet" class="w-full mt-2 bg-black/50 border border-white/10 rounded-xl p-3 text-sm"><option>TRC20</option><option>BEP20</option></select><input id="wdAmt" type="number" placeholder="10000" class="w-full mt-2 bg-black/50 border border-white/10 rounded-xl p-3 text-sm"><p class="text-[10px] text-white/30 mt-2">Minimum: 10000 PTS ($5)</p><button onclick="submitWd()" class="w-full mt-4 blue-grad py-3 rounded-xl font-black">SUBMIT REQUEST</button><button onclick="closeWd()" class="w-full mt-2 text-xs text-white/30">Cancel</button></div></div>
 
 <script>
-let pts=parseInt(localStorage.getItem('blun_pts')||'0'),ads=parseInt(localStorage.getItem('blun_ads')||'0'),tAds=parseInt(localStorage.getItem('blun_tAds')||'0'),todayE=parseInt(localStorage.getItem('blun_today')||'0'),tgDone=localStorage.getItem('blun_tg')==='1',curAd=0,iv=null;
-let todayStr=new Date().toDateString(); if(localStorage.getItem('blun_date')!==todayStr){localStorage.setItem('blun_date',todayStr); localStorage.setItem('blun_ads','0'); localStorage.setItem('blun_today','0'); ads=0; todayE=0;}
-function init(){document.getElementById('pts').innerText=pts;document.getElementById('bal').innerText=pts;document.getElementById('usd').innerText=(pts*0.0005).toFixed(2);document.getElementById('today').innerText=todayE;document.getElementById('adsD').innerText=ads;if(document.getElementById('adsD2'))document.getElementById('adsD2').innerText=ads;document.getElementById('tAds').innerText=tAds;document.getElementById('tRev').innerText=(tAds*0.01).toFixed(2);document.getElementById('wdBal').innerText=pts;renderAds();if(tgDone){let b=document.getElementById('tgBtn');b.innerText='Done';b.disabled=true;b.className='bg-green-500 text-white px-5 py-2 rounded-xl font-bold text-sm';}renderWd();}
-function renderAds(){let c=document.getElementById('adList');c.innerHTML='';for(let i=1;i<=30;i++){let done=i<=ads;let d=document.createElement('div');d.className='glass card p-3 flex justify-between items-center '+(done?'opacity-40':'');d.innerHTML=`<div class="flex gap-3 items-center"><div class="w-10 h-10 rounded-xl ${done?'bg-green-500':'blue-grad'} flex items-center justify-center"><i class="fa-solid ${done?'fa-check':'fa-play'} text-sm"></i></div><div><p class="font-bold text-sm">Watch Ad #${i}</p><p class="text-[11px] text-white/40">+50 PTS • 15s</p></div></div><button ${done?'disabled':`onclick="openAd(${i})"`} class="${done?'bg-white/10 text-white/20':'bg-white text-black'} px-4 py-2 rounded-xl text-xs font-black">${done?'Done':'Watch'}</button>`;c.appendChild(d);}}
-function openAd(n){
-  if(n!==ads+1){alert('Watch in order! Next is #'+(ads+1));return;}
-  curAd=n;
-  // === TRIGGER POP AD ON CLICK - YOU EARN HERE ===
-  triggerMonetagPop();
-  document.getElementById('adModal').classList.remove('hidden');document.getElementById('adModal').classList.add('flex');let t=15;let b=document.getElementById('claimBtn');b.disabled=true;b.innerText='WAIT...';b.className='w-full mt-4 py-3 rounded-xl bg-white/10 text-white/20 font-black';document.getElementById('timer').innerText=t;document.getElementById('prog').style.width='0%';clearInterval(iv);iv=setInterval(()=>{t--;document.getElementById('timer').innerText=t;document.getElementById('prog').style.width=((15-t)/15*100)+'%';if(t<=0){clearInterval(iv);b.disabled=false;b.innerText='CLAIM 50 PTS';b.className='w-full mt-4 py-3 rounded-xl bg-white text-black font-black';b.onclick=claim;}},1000);
+let curUser = null; let iv=null; let curAd=0;
+let todayStr=new Date().toDateString();
+
+function showSignup(){document.getElementById('authSignup').classList.remove('hidden');document.getElementById('authLogin').classList.add('hidden')}
+function showLogin(){document.getElementById('authSignup').classList.add('hidden');document.getElementById('authLogin').classList.remove('hidden')}
+
+function checkAuth(){
+  let logged = localStorage.getItem('blun_logged');
+  let u = getCurrentUser();
+  if(!logged ||!u){
+    document.getElementById('authModal').classList.remove('hidden');document.getElementById('authModal').classList.add('flex');
+    let ref=getRefFromUrl(); if(ref){document.getElementById('refInfo').innerText='Referred by: '+ref; document.getElementById('refInfo').classList.remove('hidden')}
+    return false;
+  }
+  curUser=u;
+  // migrate old data if exists
+  if(!curUser.pts && localStorage.getItem('blun_pts')){curUser.pts=parseInt(localStorage.getItem('blun_pts')||'0'); curUser.ads=parseInt(localStorage.getItem('blun_ads')||'0')}
+  curUser.pts=curUser.pts||0; curUser.ads=curUser.ads||0; curUser.today=curUser.today||0; curUser.tg=curUser.tg||false;
+  if(curUser.date!==todayStr){curUser.date=todayStr; curUser.adsToday=0; curUser.today=0; updateCurrentUser()}
+  return true;
 }
+
+function updateCurrentUser(){
+  let users=getUsers(); let idx=users.findIndex(x=>x.email===curUser.email); if(idx>=0){users[idx]=curUser; saveUsers(users)}; setCurrentUser(curUser); renderAll();
+}
+
+function doSignup(){
+  let name=document.getElementById('suName').value.trim(), email=document.getElementById('suEmail').value.trim().toLowerCase(), pass=document.getElementById('suPass').value.trim();
+  if(!name||!email||!pass){alert('Fill all');return}
+  let users=getUsers(); if(users.find(u=>u.email===email)){alert('Email already exists, login');showLogin();return}
+  let ref=getRefFromUrl();
+  let newUser={username:name,email:email,password:pass,pts:0,ads:0,adsToday:0,today:0,tg:false,date:todayStr,myRef:name.replace(/\s/g,'').toUpperCase().substring(0,8)+Math.floor(Math.random()*99),referredBy:ref||null, referrals:0};
+  users.push(newUser); saveUsers(users); curUser=newUser; setCurrentUser(curUser);
+  // reward referrer
+  if(ref){let rUser=users.find(u=>u.myRef===ref||u.username===ref); if(rUser){rUser.referrals=(rUser.referrals||0)+1; saveUsers(users)}}
+  document.getElementById('authModal').classList.add('hidden'); location.reload();
+}
+function doLogin(){
+  let email=document.getElementById('liEmail').value.trim().toLowerCase(), pass=document.getElementById('liPass').value.trim();
+  let users=getUsers(); let u=users.find(x=>x.email===email && x.password===pass); if(!u){alert('Wrong email/password');return}
+  curUser=u; setCurrentUser(curUser); document.getElementById('authModal').classList.add('hidden'); location.reload();
+}
+
+function renderAll(){
+  if(!curUser) return;
+  document.getElementById('pts').innerText=curUser.pts; document.getElementById('bal').innerText=curUser.pts; document.getElementById('usd').innerText=(curUser.pts*0.0005).toFixed(2); document.getElementById('today').innerText=curUser.today; document.getElementById('adsD').innerText=curUser.adsToday||0; if(document.getElementById('adsD2'))document.getElementById('adsD2').innerText=curUser.ads; document.getElementById('userEmail').innerText=curUser.email; document.getElementById('wdBal').innerText=curUser.pts;
+  document.getElementById('refLink').innerText=location.origin+'/?ref='+curUser.myRef; document.getElementById('myCode').innerText=curUser.myRef; document.getElementById('refC').innerText=curUser.referrals||0;
+  // owner check
+  if(curUser.email===OWNER_EMAIL){document.getElementById('b-owner').classList.remove('hidden');document.getElementById('b-owner').classList.add('flex');document.getElementById('ownerEmailShow').innerText=curUser.email}
+  // ads list
+  let c=document.getElementById('adList');c.innerHTML='';for(let i=1;i<=30;i++){let done=i<= (curUser.adsToday||0);let d=document.createElement('div');d.className='glass card p-3 flex justify-between items-center '+(done?'opacity-40':'');d.innerHTML=`<div class="flex gap-3 items-center"><div class="w-10 h-10 rounded-xl ${done?'bg-green-500':'blue-grad'} flex items-center justify-center"><i class="fa-solid ${done?'fa-check':'fa-play'} text-sm"></i></div><div><p class="font-bold text-sm">Watch Ad #${i}</p><p class="text-[11px] text-white/40">+50 PTS • 15s</p></div></div><button ${done?'disabled':`onclick="openAd(${i})"`} class="${done?'bg-white/10 text-white/20':'bg-white text-black'} px-4 py-2 rounded-xl text-xs font-black">${done?'Done':'Watch'}</button>`;c.appendChild(d);}
+  if(curUser.tg){let b=document.getElementById('tgBtn');if(b){b.innerText='Done';b.disabled=true;b.className='bg-green-500 text-white px-5 py-2 rounded-xl font-bold text-sm';}}
+  renderWd();
+}
+function openAd(n){if(n!== (curUser.adsToday||0)+1){alert('Watch in order! Next is #'+((curUser.adsToday||0)+1));return;}curAd=n;triggerMonetagPop();document.getElementById('adModal').classList.remove('hidden');document.getElementById('adModal').classList.add('flex');let t=15;let b=document.getElementById('claimBtn');b.disabled=true;b.innerText='WAIT...';b.className='w-full mt-4 py-3 rounded-xl bg-white/10 text-white/20 font-black';document.getElementById('timer').innerText=t;document.getElementById('prog').style.width='0%';clearInterval(iv);iv=setInterval(()=>{t--;document.getElementById('timer').innerText=t;document.getElementById('prog').style.width=((15-t)/15*100)+'%';if(t<=0){clearInterval(iv);b.disabled=false;b.innerText='CLAIM 50 PTS';b.className='w-full mt-4 py-3 rounded-xl bg-white text-black font-black';b.onclick=claim;}},1000);}
 function closeAd(){clearInterval(iv);document.getElementById('adModal').classList.add('hidden');document.getElementById('adModal').classList.remove('flex');}
-function claim(){closeAd();if(curAd!==ads+1)return;ads++;tAds++;pts+=50;todayE+=50;localStorage.setItem('blun_pts',pts);localStorage.setItem('blun_ads',ads);localStorage.setItem('blun_tAds',tAds);localStorage.setItem('blun_today',todayE);init();}
-function joinTG(){window.open(TG_LINK,'_blank');setTimeout(()=>{if(!tgDone){pts+=500;todayE+=500;localStorage.setItem('blun_pts',pts);localStorage.setItem('blun_today',todayE);localStorage.setItem('blun_tg','1');init();}},1500);}
-function tab(t){['home','tasks','refer','owner'].forEach(x=>{document.getElementById('v-'+x).classList.add('hidden');document.getElementById('b-'+x).className='flex flex-col items-center px-5 py-2 rounded-2xl text-white/50';});document.getElementById('v-'+t).classList.remove('hidden');document.getElementById('b-'+t).className='flex flex-col items-center px-5 py-2 rounded-2xl nav-active';}
-function copyR(){navigator.clipboard.writeText(document.getElementById('refLink').innerText);alert('Copied!');}
-function openWithdraw(){document.getElementById('wdBal').innerText=pts;document.getElementById('wdModal').classList.remove('hidden');document.getElementById('wdModal').classList.add('flex');}
+function claim(){closeAd();if(curAd!== (curUser.adsToday||0)+1)return;curUser.ads=(curUser.ads||0)+1;curUser.adsToday=(curUser.adsToday||0)+1;curUser.pts+=50;curUser.today+=50; updateCurrentUser(); let tAds=parseInt(localStorage.getItem('blun_tAds')||'0')+1;localStorage.setItem('blun_tAds',tAds)}
+function joinTG(){window.open(TG_LINK,'_blank');setTimeout(()=>{if(!curUser.tg){curUser.pts+=500;curUser.today+=500;curUser.tg=true;updateCurrentUser();}},1500);}
+function tab(t){['home','tasks','refer','owner'].forEach(x=>{document.getElementById('v-'+x).classList.add('hidden');let btn=document.getElementById('b-'+x);if(btn){btn.className=btn.className.replace('nav-active','').trim(); if(!btn.classList.contains('hidden')){if(t===x){btn.classList.add('nav-active');}else{btn.className='flex flex-col items-center px-5 py-2 rounded-2xl text-white/50'+(x==='owner'&&curUser?.email!==OWNER_EMAIL?' hidden':'')}}}});document.getElementById('v-'+t).classList.remove('hidden');document.getElementById('b-'+t).className='flex flex-col items-center px-5 py-2 rounded-2xl nav-active';}
+function copyR(){navigator.clipboard.writeText(document.getElementById('refLink').innerText);alert('Copied! '+document.getElementById('refLink').innerText)}
+function openWithdraw(){document.getElementById('wdBal').innerText=curUser.pts;document.getElementById('wdModal').classList.remove('hidden');document.getElementById('wdModal').classList.add('flex');}
 function closeWd(){document.getElementById('wdModal').classList.add('hidden');document.getElementById('wdModal').classList.remove('flex');}
-function submitWd(){
-let a=document.getElementById('wdAddr').value.trim(), n=document.getElementById('wdNet').value, am=parseInt(document.getElementById('wdAmt').value);
-if(!a||!am){alert('Fill all fields');return;}
-if(am<10000){alert('Minimum withdrawal is 10000 PTS = $5');return;}
-if(am>pts){alert('Not enough PTS! Your balance: '+pts);return;}
-pts-=am; localStorage.setItem('blun_pts',pts);
-let reqs=JSON.parse(localStorage.getItem('blun_wd')||'[]');
-reqs.unshift({addr:a,net:n,amt:am,usd:(am*0.0005).toFixed(2),date:new Date().toLocaleString(),status:'Pending'});
-localStorage.setItem('blun_wd',JSON.stringify(reqs));
-let msg=`🚨 NEW WITHDRAW - BLUNBOZ BLUE\n\n💰 Amount: ${am} PTS = $${(am*0.0005).toFixed(2)}\n📍 Address: ${a}\n🌐 Network: ${n}\n📅 Date: ${new Date().toLocaleString()}\n👤 User Points Left: ${pts}\n\nPay this user ASAP!`;
-fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}`).then(()=>{console.log('Telegram sent')}).catch(e=>{console.log('TG error',e)});
-alert('Withdraw request sent! $'+(am*0.0005).toFixed(2)+' will be sent to '+a+' ('+n+') within 24h. Owner notified on Telegram!');
-closeWd(); init();
-}
-function renderWd(){let reqs=JSON.parse(localStorage.getItem('blun_wd')||'[]'); let c=document.getElementById('wdList'); let tc=document.getElementById('tWdCount'); let totalUsd=reqs.reduce((s,r)=>s+parseFloat(r.usd),0); if(tc) tc.innerText=reqs.length+' requests • $'+totalUsd.toFixed(2); if(!reqs.length){c.innerHTML='No requests yet';return;} c.innerHTML=reqs.map(r=>`<div class="glass rounded-xl p-3 mb-2"><div class="flex justify-between items-start"><div><p class="font-bold">${r.amt} PTS = $${r.usd}</p><p class="text-[10px] truncate w-40 opacity-60">${r.addr}</p><p class="text-[10px] opacity-40">${r.net} • ${r.date}</p></div><span class="text-[10px] bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full">${r.status}</span></div></div>`).join('');}
-init();
+function submitWd(){let a=document.getElementById('wdAddr').value.trim(), n=document.getElementById('wdNet').value, am=parseInt(document.getElementById('wdAmt').value); if(!a||!am){alert('Fill all');return} if(am<10000){alert('Min 10000 PTS');return} if(am>curUser.pts){alert('Not enough! You have '+curUser.pts);return} curUser.pts-=am; updateCurrentUser(); let reqs=JSON.parse(localStorage.getItem('blun_wd')||'[]'); reqs.unshift({email:curUser.email,user:curUser.username,addr:a,net:n,amt:am,usd:(am*0.0005).toFixed(2),date:new Date().toLocaleString(),status:'Pending'}); localStorage.setItem('blun_wd',JSON.stringify(reqs)); let msg=`🚨 NEW WITHDRAW\n👤 ${curUser.username} (${curUser.email})\n💰 ${am} PTS = $${(am*0.0005).toFixed(2)}\n📍 ${a}\n🌐 ${n}\n📅 ${new Date().toLocaleString()}\nLeft: ${curUser.pts}`; fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}`); alert('Request sent! $'+(am*0.0005).toFixed(2)+' to '+a); closeWd(); renderAll();}
+function renderWd(){let reqs=JSON.parse(localStorage.getItem('blun_wd')||'[]'); let c=document.getElementById('wdList'); let tc=document.getElementById('tWdCount'); let myReqs = curUser.email===OWNER_EMAIL? reqs : reqs.filter(r=>r.email===curUser.email); let totalUsd=reqs.reduce((s,r)=>s+parseFloat(r.usd),0); if(tc) tc.innerText=reqs.length+' requests • $'+totalUsd.toFixed(2); let list = curUser.email===OWNER_EMAIL? reqs : myReqs; if(!list.length){c.innerHTML='No requests yet';return;} c.innerHTML=list.map(r=>`<div class="glass rounded-xl p-3 mb-2"><div class="flex justify-between items-start"><div><p class="font-bold">${r.amt} PTS = $${r.usd}</p><p class="text-[10px] opacity-60">${r.email}</p><p class="text-[10px] truncate w-40 opacity-60">${r.addr}</p><p class="text-[10px] opacity-40">${r.net} • ${r.date}</p></div><span class="text-[10px] bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full">${r.status}</span></div></div>`).join('');}
+if(checkAuth()){renderAll(); document.getElementById('authModal').classList.add('hidden');}
 </script></body></html>
-                                                                                                                                                                                                                                                                                                                                                                                 

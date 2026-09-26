@@ -2,219 +2,43 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="monetag" content="64e7150d09fe4078709bf494ee2b4075">
-<script>
-(function(s){
- s.dataset.zone='11880684',
- s.src='https://al5sm.com/tag.min.js'
-})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
-</script>
-<script>
-(function(s){
- s.dataset.zone='11881194',
- s.src='https://n6wxm.com/vignette.min.js'
-})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
-</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BLUNBOZ</title>
+<title>BLUNBOZ - Earn Rewards</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-body{font-family:'Inter',sans-serif;background:#080a14;color:white}
-.card{background:rgba(17,21,42,0.8);border:1px solid rgba(255,255,255,0.08)}
-.btn-main{background:linear-gradient(90deg,#22d3ee,#8b5cf6)}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+body{font-family:'Inter',sans-serif;background:#0a0e1a;color:white}
+.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08)}
 </style>
 </head>
-<body class="min-h-screen">
-<div class="max-w-[430px] mx-auto min-h-screen bg-[#0b0e1f] relative pb-24">
-
-<!-- AUTH -->
-<div id="authScreen" class="p-6 pt-14">
-<h1 class="text-3xl font-extrabold">BLUNBOZ</h1>
-<p class="text-gray-400 text-sm mt-1 mb-8">Watch Ads, Earn USDT</p>
-<div class="card rounded-[24px] p-6">
-<div class="flex gap-2 mb-6">
-<button id="tabSignIn" class="flex-1 py-2.5 rounded-full btn-main">Sign In</button>
-<button id="tabSignUp" class="flex-1 py-2.5 rounded-full bg-white/10">Create</button>
+<body class="min-h-screen pb-24">
+<div class="p-4 flex justify-between items-center sticky top-0 z-30 glass">
+  <div class="flex items-center gap-2"><div class="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center font-black">B</div><span class="font-extrabold text-lg">BLUNBOZ</span></div>
+  <div class="flex items-center gap-3"><div class="glass px-3 py-1.5 rounded-full text-sm font-bold"><i class="fa-solid fa-coins text-yellow-400 mr-1"></i><span id="pointsDisplay">0</span></div></div>
 </div>
-<input id="email" type="email" placeholder="Email" class="w-full p-3.5 rounded-xl bg-[#1a1e35] mb-3">
-<input id="password" type="password" placeholder="Password" class="w-full p-3.5 rounded-xl bg-[#1a1e35] mb-3">
-<input id="wallet" type="text" placeholder="USDT TRC20 Address" class="w-full p-3.5 rounded-xl bg-[#1a1e35] mb-2 hidden">
-<input id="refInput" type="text" placeholder="Referral Code" class="w-full p-3.5 rounded-xl bg-[#1a1e35] mb-4 hidden">
-<p id="message" class="text-xs text-center mb-3 text-red-400"></p>
-<button id="authBtn" class="w-full py-3.5 rounded-xl btn-main font-bold">Sign In</button>
+<div class="mx-4 mt-4 rounded-[24px] bg-gradient-to-br from-violet-600 to-fuchsia-600 p-5">
+  <p class="text-white/70 text-sm">Total Balance</p><h1 class="text-3xl font-black mt-1"><span id="balancePoints">0</span> PTS</h1><p class="text-white/80 text-sm">≈ $<span id="usdValue">0.00</span></p>
+  <div class="mt-4 grid grid-cols-2 gap-3"><div class="bg-black/20 rounded-xl p-3"><p class="text-xs text-white/60">Today</p><p class="font-bold">+<span id="todayEarned">0</span></p></div><div class="bg-black/20 rounded-xl p-3"><p class="text-xs text-white/60">Referrals</p><p class="font-bold"><span id="refCount">0</span></p></div></div>
 </div>
+<div class="mx-4 mt-6 flex gap-2"><button onclick="switchTab('tasks')" id="tab-tasks" class="flex-1 py-3 rounded-xl bg-white text-black font-bold">Tasks</button><button onclick="switchTab('refer')" id="tab-refer" class="flex-1 py-3 rounded-xl glass font-bold">Refer</button><button onclick="switchTab('owner')" id="tab-owner" class="flex-1 py-3 rounded-xl glass font-bold hidden">Owner</button></div>
+<div id="view-tasks" class="p-4 space-y-3">
+  <div class="glass rounded-2xl p-4 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-10 h-10 rounded-xl bg-[#2AABEE] flex items-center justify-center"><i class="fab fa-telegram"></i></div><div><p class="font-bold">Join Telegram</p><p class="text-xs text-white/50">+500 PTS</p></div></div><button onclick="doTelegram()" id="tgBtn" class="bg-white text-black px-4 py-2 rounded-xl text-sm font-bold">Join</button></div>
+  <div class="flex justify-between items-center mt-2"><p class="font-bold">Watch Ads (30/day)</p><p class="text-xs glass px-2 py-1 rounded-full"><span id="adsDone">0</span>/30</p></div>
+  <p class="text-xs text-white/40">Watch 15 sec ad → Earn 50 PTS. No pop-ups!</p>
+  <div id="adTasksContainer" class="space-y-2"></div>
 </div>
-<!-- HOME -->
-<div id="homeScreen" class="hidden">
-<div class="flex justify-between items-center p-6">
-<h1 class="text-2xl font-extrabold">BLUNBOZ</h1>
-<div class="flex items-center gap-2">
-<span id="ownerBadge" class="hidden px-2 py-1 rounded-full bg-yellow-500/20 text-yellow-400 text-[10px]">OWNER</span>
-<div id="avatar" class="w-9 h-9 rounded-full bg-[#1e233f] flex items-center justify-center">B</div>
-</div>
-</div>
-<div class="px-5">
-<div class="card rounded-[24px] p-6">
-<p class="text-gray-400 text-sm">Your Points</p>
-<h2 class="text-4xl font-extrabold mt-1"><span id="points">2,450</span></h2>
-<p class="text-[11px] mt-2">$<span id="usdtBal">0.24</span> USDT</p>
-<div class="mt-6">
-<p class="text-sm mb-1">Today: <span id="todayPoints">1250</span> / 3000</p>
-<div class="h-2 bg-white/10 rounded-full"><div id="progressBar" class="h-2 bg-cyan-400 rounded-full" style="width:41%"></div></div>
-</div>
-<button onclick="go('earn')" class="w-full mt-5 py-3.5 rounded-full btn-main font-bold">Earn Now</button>
-</div>
-
-<div class="grid grid-cols-2 gap-3 mt-6">
-<div onclick="go('earn')" class="card rounded-2xl p-4">▶ Watch & Earn<br><span class="text-[11px] text-gray-400">100 pts</span></div>
-<div onclick="go('tasks')" class="card rounded-2xl p-4">✓ Tasks<br><span class="text-[11px] text-gray-400">2 available</span></div>
-<div onclick="go('refer')" class="card rounded-2xl p-4">👥 Refer<br><span class="text-[11px] text-gray-400">10% lifetime</span></div>
-<div onclick="go('wallet')" class="card rounded-2xl p-4">💳 Wallet<br><span class="text-[11px] text-gray-400">$<span id="usdtBal2">0.24</span></span></div>
-</div>
-
-<!-- OWNER DASHBOARD -->
-<div id="ownerPanel" class="hidden mt-6 card rounded-2xl p-5 border border-yellow-500/20">
-<h3 class="font-bold text-yellow-400 text-sm mb-3">👑 OWNER DASHBOARD</h3>
-<div class="grid grid-cols-2 gap-3 text-sm">
-<div class="bg-black/30 p-3 rounded-xl"><p class="text-xs text-gray-400">Total Users</p><p id="totalUsers" class="font-bold">1</p></div>
-<div class="bg-black/30 p-3 rounded-xl"><p class="text-xs text-gray-400">Total Points</p><p id="totalPoints" class="font-bold">2450</p></div>
-<div class="bg-black/30 p-3 rounded-xl"><p class="text-xs text-gray-400">Ad Revenue</p><p class="font-bold">$<span id="adRevenue">0.12</span></p></div>
-<div class="bg-black/30 p-3 rounded-xl"><p class="text-xs text-gray-400">Pending</p><p id="pendingPayout" class="font-bold">$0.00</p></div>
-</div>
-<div class="mt-5">
-<h4 class="font-bold text-xs mb-2">💸 WITHDRAW REQUESTS</h4>
-<div id="withdrawList" class="space-y-2 max-h-[300px] overflow-auto text-[11px]"></div>
-</div>
-</div>
-</div>
-</div>
-
-<!-- EARN -->
-<div id="earnScreen" class="hidden p-6">
-<h2 class="text-lg font-bold mb-5">Watch & Earn</h2>
-<div class="card rounded-[24px] p-6 text-center">
-<p class="font-semibold">Watch Ad (10s)</p>
-<p class="text-xs text-gray-400">Reward: 100 Points</p>
-<div id="timer" class="text-3xl font-bold my-4 hidden">10s</div>
-<button id="watchBtn" class="w-full mt-4 py-3.5 rounded-full btn-main font-bold">Watch Now</button>
-<p id="earnMsg" class="text-xs mt-3 text-green-400"></p>
-</div>
-<p class="mt-4 text-xs">Daily: <span id="watchedToday">0</span>/30 ads</p>
-</div>
-
-<!-- TASKS -->
-<div id="tasksScreen" class="hidden p-6">
-<h2 class="text-lg font-bold mb-5">Tasks</h2>
-<div class="card rounded-2xl p-4 flex justify-between">
-<div>Join Telegram<br><span class="text-xs text-gray-400">@blunbozearn +1000 pts</span></div>
-<a href="https://t.me/blunbozearn" target="_blank"><button class="bg-white text-black px-4 py-1.5 rounded-full text-sm">Join</button></a>
-</div>
-</div>
-
-<!-- REFER -->
-<div id="referScreen" class="hidden p-6">
-<h2 class="text-lg font-bold mb-5">Refer & Earn</h2>
-<div style="background:#1a1f3d;border:2px solid #7c3aed;border-radius:16px;padding:16px;">
-<h3>🔗 Your Invite Link</h3>
-<input id="myLink" style="width:100%;padding:10px;background:#000;color:#fff;border-radius:8px;margin:8px 0;" readonly />
-<button onclick="navigator.clipboard.writeText(document.getElementById('myLink').value);this.innerText='✅ Copied!'" style="width:100%;background:#25D366;color:#fff;padding:12px;border-radius:10px;font-weight:bold;">COPY & SHARE</button>
-</div>
-<div class="card rounded-[24px] p-6 mt-4">
-<input id="refLink" class="w-full p-3 rounded-xl bg-[#1a1e35] text-xs" readonly>
-<button onclick="copyRef()" class="mt-2 w-full py-2 rounded-xl btn-main text-xs">Copy Link</button>
-<div class="grid grid-cols-3 gap-3 mt-4 text-center">
-<div><p id="refCount" class="font-bold">0</p><p class="text-[11px] text-gray-400">Friends</p></div>
-<div><p id="refEarned" class="font-bold">0</p><p class="text-[11px] text-gray-400">Earned</p></div>
-<div><p class="font-bold">10%</p><p class="text-[11px] text-gray-400">Comm</p></div>
-</div>
-</div>
- </div>
- <!-- WALLET -->
-<div id="walletScreen" class="hidden p-6">
-<h2 class="text-lg font-bold mb-5">Wallet</h2>
-<div class="card rounded-[24px] p-6">
-<p class="text-sm text-gray-400">USDT Balance</p>
-<h2 class="text-2xl font-bold">$<span id="usdtBalance">0.00</span></h2>
-<input id="withdrawWallet" type="text" placeholder="Your USDT TRC20 address" class="w-full mt-4 p-3.5 rounded-xl bg-[#1a1e35] text-sm">
-<input id="withdrawAmount" type="number" placeholder="Min $1.00" class="w-full mt-3 p-3.5 rounded-xl bg-[#1a1e35] text-sm">
-<button id="withdrawBtn" class="w-full mt-4 py-3.5 rounded-full btn-main font-bold text-sm">Withdraw</button>
-<p id="walletMsg" class="text-xs mt-3 text-center"></p>
-<div id="myWithdraws" class="mt-4 text-[11px]"></div>
-</div>
-<button onclick="logout()" class="w-full mt-4 py-2 text-xs text-red-400">Logout</button>
-</div>
-
-<!-- NAV -->
-<div id="bottomNav" class="hidden fixed bottom-0 left-0 right-0 max-w-[430px] mx-auto bg-[#0f1226] border-t border-white/10 flex justify-around py-3">
-<button onclick="go('home')" class="text-[11px]">⌂ Home</button>
-<button onclick="go('earn')" class="text-[11px] text-gray-500">▶ Earn</button>
-<button onclick="go('tasks')" class="text-[11px] text-gray-500">✓ Tasks</button>
-<button onclick="go('refer')" class="text-[11px] text-gray-500">👥 Refer</button>
-<button onclick="go('wallet')" class="text-[11px] text-gray-500">💳 Wallet</button>
-</div>
-</div>
-
+<div id="view-refer" class="p-4 hidden"><div class="glass rounded-[20px] p-5 text-center"><h2 class="font-black text-xl">Invite & Earn 20%</h2><div class="mt-4 glass rounded-xl p-3 flex justify-between items-center"><span id="refLink" class="text-xs truncate"></span><button onclick="copyRef()" class="bg-white text-black px-3 py-1.5 rounded-lg text-xs font-bold ml-2">Copy</button></div></div></div>
+<div id="view-owner" class="p-4 hidden"><div class="rounded-[20px] bg-gradient-to-br from-amber-500 to-orange-600 p-5"><p class="font-black">OWNER DASHBOARD - sammgodpower@gmail.com</p><div class="mt-4 grid grid-cols-2 gap-3"><div class="bg-black/20 rounded-xl p-3"><p class="text-xs">Users</p><p class="text-xl font-black" id="totalUsers">1</p></div><div class="bg-black/20 rounded-xl p-3"><p class="text-xs">Points</p><p class="text-xl font-black" id="totalPoints">0</p></div><div class="bg-black/20 rounded-xl p-3"><p class="text-xs">Ads Watched</p><p class="text-xl font-black" id="totalAds">0</p></div><div class="bg-black/20 rounded-xl p-3"><p class="text-xs">Revenue</p><p class="text-xl font-black">$<span id="totalRevenue">0.00</span></p></div></div></div></div>
+<div id="adModal" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center p-6"><div class="w-full max-w-sm glass rounded-[24px] p-5 text-center"><p class="font-bold">Watching Ad... <span id="adTimer">15</span>s</p><div class="w-full h-2 bg-white/10 rounded-full mt-3 overflow-hidden"><div id="adProgress" class="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500" style="width:0%;transition:width 1s linear"></div></div><div class="mt-4 w-full h-48 bg-black rounded-xl flex items-center justify-center"><div class="text-center p-4"><i class="fa-solid fa-rectangle-ad text-4xl text-white/20"></i><p class="text-xs text-white/40 mt-2">Ad Playing... PASTE YOUR AD CODE HERE</p><div id="realAdSlot"></div></div></div><button id="claimAdBtn" disabled class="w-full mt-4 py-3 rounded-xl bg-white/10 text-white/30 font-bold">Wait...</button><button onclick="closeAdModal()" class="w-full mt-2 text-xs text-white/30">Close</button></div></div>
+<div class="fixed bottom-0 left-0 right-0 glass border-t border-white/10 flex justify-around py-3 z-20"><button onclick="switchTab('tasks')" class="flex flex-col items-center text-white"><i class="fa-solid fa-list-check"></i><span class="text-[10px] mt-1">Tasks</span></button><button onclick="switchTab('refer')" class="flex flex-col items-center text-white/40"><i class="fa-solid fa-users"></i><span class="text-[10px] mt-1">Refer</span></button><button onclick="switchTab('owner')" id="bottom-owner-btn" class="flex flex-col items-center text-white/40 hidden"><i class="fa-solid fa-crown text-amber-400"></i><span class="text-[10px] mt-1">Owner</span></button></div>
 <script>
-const $=id=>document.getElementById(id);
-function getUsers(){
-let old=localStorage.getItem('blunboz_users');
-let v2=localStorage.getItem('blunboz_users_v2');
-if(v2) return JSON.parse(v2);
-if(old) return JSON.parse(old);
-return [];
-}
-function migrateUsers(){
-let old=localStorage.getItem('blunboz_users');
-if(old && !localStorage.getItem('blunboz_users_v2')){
-localStorage.setItem('blunboz_users_v2',old);
-}
-}
-migrateUsers();
-function saveUsers(u){localStorage.setItem('blunboz_users_v2',JSON.stringify(u))}
-function getWithdraws(){return JSON.parse(localStorage.getItem('blunboz_withdraws')||'[]')}
-function saveWithdraws(w){localStorage.setItem('blunboz_withdraws',JSON.stringify(w))}
-function genCode(){return Math.random().toString(36).substring(2,7).toUpperCase()}
-let currentUser=null;
-function go(page){
-['authScreen','homeScreen','earnScreen','tasksScreen','referScreen','walletScreen'].forEach(s=>$(s).classList.add('hidden'));
-$('bottomNav').classList.remove('hidden');
-if(page==='auth'){$('authScreen').classList.remove('hidden');$('bottomNav').classList.add('hidden')}
-else if(page==='home'){$('homeScreen').classList.remove('hidden')}
-else if(page==='earn'){$('earnScreen').classList.remove('hidden')}
-else if(page==='tasks'){$('tasksScreen').classList.remove('hidden')}
-else if(page==='refer'){$('referScreen').classList.remove('hidden')}
-else if(page==='wallet'){$('walletScreen').classList.remove('hidden')}
-if(currentUser)updateUI();
-}
-function updateUI(){
-if(!currentUser)return;
-$('points').textContent=currentUser.points.toLocaleString();
-let usdt=(currentUser.points/10000).toFixed(2);
-$('usdtBal').textContent=usdt;
-$('usdtBal2').textContent=usdt;
-$('usdtBalance').textContent=usdt;
-$('avatar').textContent=currentUser.email[0].toUpperCase();
-$('watchedToday').textContent=currentUser.watchedToday||0;
-$('todayPoints').textContent=currentUser.todayPoints||1250;
-$('progressBar').style.width=Math.min(100,((currentUser.todayPoints||1250)/3000)*100)+'%';
-$('refLink').value=location.origin+'/?ref='+currentUser.refCode;
-$('refCount').textContent=currentUser.referrals||0;
-$('refEarned').textContent=currentUser.refEarned||0;
-let users=getUsers();
-let isOwner = currentUser.email === "sammgodpower@gmail.com";
-if(isOwner){
-$('ownerBadge').classList.remove('hidden');
-$('ownerPanel').classList.remove('hidden');
-$('totalUsers').textContent=users.length;
-let tot=users.reduce((a,b)=>a+b.points,0);
-$('totalPoints').textContent=tot;
-$('adRevenue').textContent=(tot*0.00005).toFixed(2);
-let wd=getWithdraws();
-let pend=wd.filter(x=>x.status==='pending').reduce((a,b)=>a+b.amount,0);
-$('pendingPayout').textContent='$'+pend.toFixed(2);
-renderWithdraws();
-}
-let myW=getWithdraws().filter(w=>w.email===currentUser.email);
-if(myW.length){
-$('myWithdraws').innerHTML='<p class="font-bold mb-1">Your requests:</p>'+myW.map(w=>'
+let points = parseInt(localStorage.getItem('blunboz_points')||'0');
+let adsWatchedToday = parseInt(localStorage.getItem('blunboz_ads_today')||'0');
+let totalAdsAll = parseInt(localStorage.getItem('blunboz_total_ads')||'0');
+let todayEarned = parseInt(localStorage.getItem('blunboz_today_earned')||'0');
+let tgDone = localStorage.getItem('blunboz_tg')==='1';
+let currentAdTask=0, adInterval=null;
+let ownerEmail='sammgodpower@gmail.com';
+let userEmail=localStorage.getItem('blunboz_email')||'';
+if(!userEmail){let email=prompt('Enter email (use sammgodpower@gmail.com for owner dashboard):')||'user@blunboz.com';localStorage.setItem('blunboz_email',email);userEmail=email

@@ -1,26 +1,31 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BLUNBOZ BLUE - FINAL</title><script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>body{background:#050A1A;color:#fff;font-family:Inter,sans-serif;padding-bottom:90px}.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08)}.blue-grad{background:linear-gradient(135deg,#0A84FF 0%,#00D4FF 100%)}.card{border-radius:20px}.nav-active{background:#fff;color:#000!important}</style></head><body>
-<script>const TG_LINK="https://t.me/blunbozearn";</script>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BLUNBOZ BLUE - FINAL + TEST</title><script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>body{background:#050A1A;color:#fff;font-family:Inter,sans-serif;padding-bottom:90px}.glass{background:rgba(255,255,255,0.06);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08)}.blue-grad{background:linear-gradient(135deg,#0A84FF 0%,#00D4FF 100%)}.card{border-radius:20px}.nav-active{background:#fff;color:#000!important}</style></head><body>
+<script>
+const TG_LINK="https://t.me/blunbozearn";
+const BOT_TOKEN="8745956041:AAF7WSE4so4g-yDDtQ75vo7nwtOZybzYeYw";
+const CHAT_ID="7223271472";
+</script>
 <div class="p-4 flex justify-between items-center"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl blue-grad flex items-center justify-center font-black text-lg">B</div><div><p class="font-black tracking-widest">BLUNBOZ</p><p class="text-[10px] text-cyan-300 -mt-1 tracking-[0.2em]">BLUE • EARN</p></div></div><div class="glass px-3 py-2 rounded-full font-bold text-sm"><i class="fa-solid fa-coins text-cyan-400"></i> <span id="pts">0</span></div></div>
 
-<!-- HOME TAB -->
 <div id="v-home" class="p-4 space-y-4">
 <div class="rounded-[28px] blue-grad p-[1px]"><div class="rounded-[27px] bg-gradient-to-br from-[#0A84FF] to-[#0038A8] p-5 relative overflow-hidden"><div class="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-2xl"></div><p class="text-white/70 text-xs uppercase tracking-widest">Total Balance</p><h1 class="text-4xl font-black mt-1"><span id="bal">0</span> PTS</h1><p class="text-white/80 text-sm mt-1">≈ $<span id="usd">0.00</span></p><button onclick="openWithdraw()" class="mt-4 bg-white text-[#0038A8] w-full py-3 rounded-xl font-black text-sm"><i class="fa-solid fa-arrow-up-from-bracket mr-2"></i>WITHDRAW - MIN $5</button><div class="mt-4 grid grid-cols-2 gap-3"><div class="bg-black/20 rounded-2xl p-3"><p class="text-[10px] text-white/60">TODAY</p><p class="font-bold">+<span id="today">0</span></p></div><div class="bg-black/20 rounded-2xl p-3"><p class="text-[10px] text-white/60">REFERRALS</p><p class="font-bold" id="refC">0</p></div></div></div></div>
 <div class="glass card p-4"><p class="font-bold text-sm">Quick Stats</p><div class="mt-3 grid grid-cols-3 gap-3 text-center"><div class="bg-black/30 rounded-xl p-3"><p class="text-xl font-black" id="adsD2">0</p><p class="text-[10px] text-white/40">Ads Watched</p></div><div class="bg-black/30 rounded-xl p-3"><p class="text-xl font-black">30</p><p class="text-[10px] text-white/40">Daily Limit</p></div><div class="bg-black/30 rounded-xl p-3"><p class="text-xl font-black">$5</p><p class="text-[10px] text-white/40">Min Withdraw</p></div></div><button onclick="tab('tasks')" class="w-full mt-4 blue-grad py-3 rounded-xl font-black text-sm">START EARNING →</button></div>
 </div>
 
-<!-- TASKS TAB -->
 <div id="v-tasks" class="p-4 space-y-3 hidden">
 <div class="glass card p-4 flex justify-between items-center"><div class="flex gap-3 items-center"><div class="w-11 h-11 rounded-xl bg-[#2AABEE] flex items-center justify-center"><i class="fab fa-telegram text-xl"></i></div><div><p class="font-bold text-sm">Join Telegram</p><p class="text-xs text-white/40">+500 PTS • @blunbozearn</p></div></div><button id="tgBtn" onclick="joinTG()" class="bg-white text-black px-5 py-2 rounded-xl font-bold text-sm">Join</button></div>
-<div class="flex justify-between items-center pt-2"><p class="font-bold">Watch Ads (30/day)</p><span class="glass px-3 py-1 rounded-full text-xs"><span id="adsD">0</span>/30</span></div><p class="text-[11px] text-white/30">15 sec ad → 50 PTS • No pop-ups • Min Withdraw $5 (10000 PTS)</p><div id="adList" class="space-y-2"></div>
+<div class="flex justify-between items-center pt-2"><p class="font-bold">Watch Ads (30/day)</p><span class="glass px-3 py-1 rounded-full text-xs"><span id="adsD">0</span>/30</span></div><p class="text-[11px] text-white/30">15 sec ad → 50 PTS • Min Withdraw $5 (10000 PTS)</p><div id="adList" class="space-y-2"></div>
 </div>
 
-<!-- REFER TAB -->
 <div id="v-refer" class="p-4 hidden"><div class="glass card p-5 text-center"><h3 class="font-black">INVITE & EARN 20%</h3><p class="text-xs text-white/40 mt-1">Get 20% of your friends earnings</p><div class="mt-4 bg-black/40 rounded-xl p-3 flex gap-2"><span id="refLink" class="text-xs truncate flex-1 text-left">https://blunboz.vercel.app/?ref=BLUE</span><button onclick="copyR()" class="blue-grad px-3 py-1 rounded-lg text-xs font-bold">Copy</button></div></div></div>
 
-<!-- OWNER TAB -->
-<div id="v-owner" class="p-4 hidden space-y-3"><div class="blue-grad card p-5"><p class="font-black text-sm">OWNER: sammgodpower@gmail.com</p><div class="mt-3 grid grid-cols-2 gap-3"><div class="bg-black/20 rounded-xl p-3"><p class="text-[10px] opacity-70">TOTAL ADS</p><p class="font-black text-xl" id="tAds">0</p></div><div class="bg-black/20 rounded-xl p-3"><p class="text-[10px] opacity-70">REVENUE</p><p class="font-black text-xl">$<span id="tRev">0.00</span></p></div></div><div class="mt-3 bg-black/20 rounded-xl p-3"><p class="text-[10px] opacity-70">WITHDRAW REQUESTS</p><p class="font-black" id="tWdCount">0 requests • $0.00</p></div></div><div class="glass card p-4"><p class="font-bold text-sm mb-2">Withdraw Requests</p><div id="wdList" class="text-xs text-white/40">No requests yet</div></div></div>
+<div id="v-owner" class="p-4 hidden space-y-3">
+<div class="blue-grad card p-5"><p class="font-black text-sm">OWNER: sammgodpower@gmail.com</p>
+<button onclick="addTestPts()" class="mt-3 w-full bg-white text-[#0038A8] py-3 rounded-xl font-black text-xs"><i class="fa-solid fa-flask mr-2"></i>ADD 10000 TEST PTS (FOR TESTING)</button>
+<p class="text-[10px] text-white/60 mt-2 text-center">Click to add 10k → then go Home → Withdraw → check Telegram</p>
+<div class="mt-3 grid grid-cols-2 gap-3"><div class="bg-black/20 rounded-xl p-3"><p class="text-[10px] opacity-70">TOTAL ADS</p><p class="font-black text-xl" id="tAds">0</p></div><div class="bg-black/20 rounded-xl p-3"><p class="text-[10px] opacity-70">REVENUE</p><p class="font-black text-xl">$<span id="tRev">0.00</span></p></div></div><div class="mt-3 bg-black/20 rounded-xl p-3"><p class="text-[10px] opacity-70">WITHDRAW REQUESTS</p><p class="font-black" id="tWdCount">0 requests • $0.00</p></div></div>
+<div class="glass card p-4"><p class="font-bold text-sm mb-2">Withdraw Requests</p><div id="wdList" class="text-xs text-white/40">No requests yet</div></div>
+</div>
 
-<!-- BOTTOM NAV WITH HOME -->
 <div class="fixed bottom-0 left-0 right-0 bg-[#080E26]/90 backdrop-blur-xl border-t border-white/10 p-2 flex justify-around z-40">
 <button id="b-home" onclick="tab('home')" class="flex flex-col items-center px-5 py-2 rounded-2xl nav-active"><i class="fa-solid fa-house text-sm"></i><span class="text-[10px] mt-1 font-bold">Home</span></button>
 <button id="b-tasks" onclick="tab('tasks')" class="flex flex-col items-center px-5 py-2 rounded-2xl text-white/50"><i class="fa-solid fa-list-check text-sm"></i><span class="text-[10px] mt-1">Tasks</span></button>
@@ -28,7 +33,6 @@
 <button id="b-owner" onclick="tab('owner')" class="flex flex-col items-center px-5 py-2 rounded-2xl text-white/50"><i class="fa-solid fa-shield text-sm"></i><span class="text-[10px] mt-1">Owner</span></button>
 </div>
 
-<!-- MODALS -->
 <div id="adModal" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center p-6"><div class="w-full max-w-sm glass rounded-[28px] p-6 text-center"><p class="font-bold">Watching... <span id="timer">15</span>s</p><div class="w-full h-2 bg-white/10 rounded-full mt-3 overflow-hidden"><div id="prog" class="h-full blue-grad" style="width:0%"></div></div><div class="mt-5 h-40 bg-black/60 rounded-2xl flex flex-col items-center justify-center gap-2"><i class="fa-solid fa-rectangle-ad text-3xl text-white/20"></i><p class="text-xs text-white/30">Ad playing...</p></div><button id="claimBtn" disabled class="w-full mt-4 py-3 rounded-xl bg-white/10 text-white/20 font-black">WAIT...</button><button onclick="closeAd()" class="mt-3 text-xs text-white/30">Close</button></div></div>
 <div id="wdModal" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center p-6"><div class="w-full max-w-sm glass rounded-[28px] p-6"><h3 class="font-black text-center">WITHDRAW $5 MIN</h3><p class="text-xs text-center text-white/40 mt-1">10000 PTS = $5.00 • USDT Only</p><p class="text-[11px] text-center text-cyan-300 mt-1">Balance: <span id="wdBal">0</span> PTS</p><input id="wdAddr" placeholder="USDT Address (TRC20/BEP20)" class="w-full mt-4 bg-black/50 border border-white/10 rounded-xl p-3 text-sm"><select id="wdNet" class="w-full mt-2 bg-black/50 border border-white/10 rounded-xl p-3 text-sm"><option>TRC20</option><option>BEP20</option></select><input id="wdAmt" type="number" placeholder="10000" class="w-full mt-2 bg-black/50 border border-white/10 rounded-xl p-3 text-sm"><p class="text-[10px] text-white/30 mt-2">Minimum: 10000 PTS ($5)</p><button onclick="submitWd()" class="w-full mt-4 blue-grad py-3 rounded-xl font-black">SUBMIT REQUEST</button><button onclick="closeWd()" class="w-full mt-2 text-xs text-white/30">Cancel</button></div></div>
 
@@ -45,7 +49,21 @@ function tab(t){['home','tasks','refer','owner'].forEach(x=>{document.getElement
 function copyR(){navigator.clipboard.writeText(document.getElementById('refLink').innerText);alert('Copied!');}
 function openWithdraw(){document.getElementById('wdBal').innerText=pts;document.getElementById('wdModal').classList.remove('hidden');document.getElementById('wdModal').classList.add('flex');}
 function closeWd(){document.getElementById('wdModal').classList.add('hidden');document.getElementById('wdModal').classList.remove('flex');}
-function submitWd(){let a=document.getElementById('wdAddr').value.trim(), n=document.getElementById('wdNet').value, am=parseInt(document.getElementById('wdAmt').value); if(!a||!am){alert('Fill all fields');return;} if(am<10000){alert('Minimum withdrawal is 10000 PTS = $5');return;} if(am>pts){alert('Not enough PTS! Your balance: '+pts);return;} pts-=am; localStorage.setItem('blun_pts',pts); let reqs=JSON.parse(localStorage.getItem('blun_wd')||'[]'); reqs.unshift({addr:a,net:n,amt:am,usd:(am*0.0005).toFixed(2),date:new Date().toLocaleString(),status:'Pending'}); localStorage.setItem('blun_wd',JSON.stringify(reqs)); alert('Withdraw request sent! $'+(am*0.0005).toFixed(2)+' will be sent to '+a+' ('+n+') within 24h'); closeWd(); init();}
+function addTestPts(){pts+=10000; todayE+=10000; localStorage.setItem('blun_pts',pts); localStorage.setItem('blun_today',todayE); init(); alert('Added 10000 PTS! Now go to Home → Withdraw → test Telegram');}
+function submitWd(){
+let a=document.getElementById('wdAddr').value.trim(), n=document.getElementById('wdNet').value, am=parseInt(document.getElementById('wdAmt').value);
+if(!a||!am){alert('Fill all fields');return;}
+if(am<10000){alert('Minimum withdrawal is 10000 PTS = $5');return;}
+if(am>pts){alert('Not enough PTS! Your balance: '+pts);return;}
+pts-=am; localStorage.setItem('blun_pts',pts);
+let reqs=JSON.parse(localStorage.getItem('blun_wd')||'[]');
+reqs.unshift({addr:a,net:n,amt:am,usd:(am*0.0005).toFixed(2),date:new Date().toLocaleString(),status:'Pending'});
+localStorage.setItem('blun_wd',JSON.stringify(reqs));
+let msg=`🚨 NEW WITHDRAW - BLUNBOZ BLUE\n\n💰 Amount: ${am} PTS = $${(am*0.0005).toFixed(2)}\n📍 Address: ${a}\n🌐 Network: ${n}\n📅 Date: ${new Date().toLocaleString()}\n👤 User Points Left: ${pts}\n\nPay this user ASAP!`;
+fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}`).then(()=>{console.log('Telegram sent')}).catch(e=>{console.log('TG error',e)});
+alert('Withdraw request sent! $'+(am*0.0005).toFixed(2)+' will be sent to '+a+' ('+n+') within 24h. Owner notified on Telegram!');
+closeWd(); init();
+}
 function renderWd(){let reqs=JSON.parse(localStorage.getItem('blun_wd')||'[]'); let c=document.getElementById('wdList'); let tc=document.getElementById('tWdCount'); let totalUsd=reqs.reduce((s,r)=>s+parseFloat(r.usd),0); if(tc) tc.innerText=reqs.length+' requests • $'+totalUsd.toFixed(2); if(!reqs.length){c.innerHTML='No requests yet';return;} c.innerHTML=reqs.map(r=>`<div class="glass rounded-xl p-3 mb-2"><div class="flex justify-between items-start"><div><p class="font-bold">${r.amt} PTS = $${r.usd}</p><p class="text-[10px] truncate w-40 opacity-60">${r.addr}</p><p class="text-[10px] opacity-40">${r.net} • ${r.date}</p></div><span class="text-[10px] bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-full">${r.status}</span></div></div>`).join('');}
 init();
 </script></body></html>

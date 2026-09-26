@@ -157,7 +157,20 @@ body{font-family:'Inter',sans-serif;background:#080a14;color:white}
 
 <script>
 const $=id=>document.getElementById(id);
-function getUsers(){return JSON.parse(localStorage.getItem('blunboz_users_v2')||'[]')}
+function getUsers(){
+let old=localStorage.getItem('blunboz_users');
+let v2=localStorage.getItem('blunboz_users_v2');
+if(v2) return JSON.parse(v2);
+if(old) return JSON.parse(old);
+return [];
+}
+function migrateUsers(){
+let old=localStorage.getItem('blunboz_users');
+if(old && !localStorage.getItem('blunboz_users_v2')){
+localStorage.setItem('blunboz_users_v2',old);
+}
+}
+migrateUsers();
 function saveUsers(u){localStorage.setItem('blunboz_users_v2',JSON.stringify(u))}
 function getWithdraws(){return JSON.parse(localStorage.getItem('blunboz_withdraws')||'[]')}
 function saveWithdraws(w){localStorage.setItem('blunboz_withdraws',JSON.stringify(w))}

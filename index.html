@@ -1,255 +1,110 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Blunboz - Earn</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<style>.nav-active{color:#3b82f6!important}</style>
 </head>
-<body class="bg-[#0a0f1f] text-white min-h-screen font-sans">
+<body class="bg-[#0a0f1f] text-white min-h-screen font-sans pb-20">
 
-<!-- LOGIN MODAL -->
+<!-- AUTH MODAL -->
 <div id="authModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-[999] hidden flex items-center justify-center p-4">
-  <div class="bg-[#121a33] p-6 rounded-[24px] w-full max-w-sm border border-white/10 shadow-2xl">
-    <h2 class="text-[22px] font-black text-center">Welcome to Blunboz</h2>
-    <p class="text-xs text-white/40 text-center mt-1">Login to start earning</p>
+<div class="bg-[#121a33] p-6 rounded-[24px] w-full max-w-sm border border-white/10">
+<h2 class="text-[22px] font-black text-center">Welcome to Blunboz</h2>
+<div class="bg-blue-600/15 border border-blue-500/30 p-3 rounded-xl my-4 text-center">
+<p class="text-[10px] text-blue-300 tracking-widest">YOU WERE INVITED BY</p>
+<p id="refInviteCode" class="text-[15px] font-black text-blue-400 mt-1">BLUNBOZ</p>
+</div>
+<input id="email" type="email" placeholder="Email" class="w-full p-3.5 rounded-xl bg-black/60 border border-white/10 mb-3 outline-none text-sm">
+<input id="password" type="password" placeholder="Password" class="w-full p-3.5 rounded-xl bg-black/60 border border-white/10 mb-2 outline-none text-sm">
+<p id="authError" class="text-[11px] text-red-400 mb-2 hidden bg-red-500/10 p-2 rounded-lg border border-red-500/20"></p>
+<div class="text-right mb-3"><button onclick="forgotPass()" class="text-[11px] text-blue-400">Forgot Password?</button></div>
+<button id="mainBtn" onclick="handleAuth()" class="w-full bg-blue-600 py-3.5 rounded-xl font-black">SIGN UP & START EARNING</button>
+<div class="flex justify-center gap-2 mt-3 text-[11px]"><span class="text-white/40" id="switchText">Already have account?</span><button onclick="toggleMode()" id="toggleBtn" class="text-blue-400 font-bold">LOG IN</button></div>
+</div></div>
 
-    <!-- THIS IS WHAT YOU ASKED FOR - SHOWS WHO INVITED THEM -->
-    <div id="refInviteBox" class="bg-blue-600/15 border border-blue-500/30 p-3 rounded-xl my-4 text-center">
-      <p class="text-[10px] text-blue-300 tracking-widest">YOU WERE INVITED BY</p>
-      <p id="refInviteCode" class="text-[15px] font-black text-blue-400 mt-1 tracking-wider">BLUNBOZ</p>
-    </div>
-
-    <input id="email" type="email" placeholder="Email" class="w-full p-3.5 rounded-xl bg-black/60 border border-white/10 mb-3 outline-none focus:border-blue-500 text-sm">
-    <input id="password" type="password" placeholder="Password (min 6 chars)" class="w-full p-3.5 rounded-xl bg-black/60 border border-white/10 mb-2 outline-none focus:border-blue-500 text-sm">
-    <p id="authError" class="text-[11px] text-red-400 mb-2 hidden bg-red-500/10 p-2 rounded-lg border border-red-500/20"></p>
-    <div class="text-right mb-4">
-      <button onclick="forgotPass()" class="text-[11px] text-blue-400">Forgot Password?</button>
-    </div>
-    <button id="mainBtn" onclick="handleAuth()" class="w-full bg-blue-600 hover:bg-blue-700 py-3.5 rounded-xl font-black tracking-wide transition">SIGN UP & START EARNING</button>
-    <div class="flex justify-center gap-2 mt-4 text-[11px]">
-      <span class="text-white/40" id="switchText">Already have account?</span>
-      <button onclick="toggleMode()" id="toggleBtn" class="text-blue-400 font-bold">LOG IN</button>
-    </div>
-  </div>
+<!-- HEADER -->
+<div class="p-4 max-w-md mx-auto flex justify-between items-center">
+<h1 class="font-black text-[20px] tracking-wider">BLUNBOZ</h1>
+<div class="flex gap-2 items-center"><span id="pts" class="bg-blue-600 px-4 py-1.5 rounded-full text-sm font-bold">0 PTS</span><button onclick="logOut()" class="bg-white/10 px-3 py-1.5 rounded-full text-[11px]">Logout</button></div>
 </div>
 
-<!-- DASHBOARD -->
-<div class="p-4 max-w-md mx-auto">
-  <div class="flex justify-between items-center mb-6 mt-2">
-    <h1 class="font-black text-[20px] tracking-wider">BLUNBOZ</h1>
-    <div class="flex gap-2 items-center">
-      <span id="pts" class="bg-blue-600 px-4 py-1.5 rounded-full text-sm font-bold">0 PTS</span>
-      <button onclick="logOut()" class="bg-white/10 px-3 py-1.5 rounded-full text-[11px]">Logout</button>
-    </div>
-  </div>
+<div class="max-w-md mx-auto px-4">
 
-  <div class="bg-[#121a33] rounded-[24px] p-4 border border-white/10">
-    <div class="flex justify-between text-sm mb-3">
-      <p id="timerText" class="font-bold">Ready to watch</p>
-      <p id="adCount" class="text-white/50 font-mono">0 / 30</p>
-    </div>
-    <div class="w-full h-2 bg-white/10 rounded-full mb-4 overflow-hidden">
-      <div id="progressBar" class="h-full bg-blue-500 transition-all" style="width:0%"></div>
-    </div>
-    <div id="realAdContainer" class="h-56 bg-black rounded-2xl flex flex-col items-center justify-center border border-white/5 text-center">
-      <p class="text-3xl">▶️</p>
-      <p class="text-xs text-white/30 mt-2">Watch 15s = 50 PTS</p>
-    </div>
-    <button id="claimBtn" onclick="startAd()" class="w-full bg-blue-600 py-4 rounded-2xl font-black mt-4">WATCH AD (15s) - 50 PTS</button>
-  </div>
+<!-- HOME PAGE -->
+<div id="homePage">
+<div class="bg-[#121a33] rounded-[24px] p-4 border border-white/10">
+<div class="flex justify-between text-sm mb-3"><p id="timerText" class="font-bold">Ready to watch</p><p id="adCount" class="text-white/50 font-mono">0 / 30</p></div>
+<div class="w-full h-2 bg-white/10 rounded-full mb-4 overflow-hidden"><div id="progressBar" class="h-full bg-blue-500 transition-all" style="width:0%"></div></div>
+<div id="realAdContainer" class="h-52 bg-black rounded-2xl flex flex-col items-center justify-center border border-white/5"><p class="text-3xl">▶️</p><p class="text-xs text-white/30 mt-2">Watch 15s = 50 PTS</p></div>
+<button id="claimBtn" onclick="startAd()" class="w-full bg-blue-600 py-4 rounded-2xl font-black mt-4">WATCH AD (15s) - 50 PTS</button>
+</div>
 
-  <!-- REFERRAL DASHBOARD - PROFESSIONAL -->
-  <div class="mt-5 bg-[#121a33] rounded-[20px] p-4 border border-white/10">
-    <p class="text-sm font-bold">🔗 Your Referral Link</p>
-    <p class="text-[11px] text-white/40 mb-2">Share & earn 10 PTS per referral</p>
-    <div class="flex gap-2">
-      <div id="myRefLink" class="flex-1 bg-black p-3 rounded-xl text-xs break-all border border-white/5 text-blue-300 select-all">Loading your link...</div>
-      <button onclick="copyRef()" class="bg-white text-black px-4 rounded-xl text-xs font-black">COPY</button>
-    </div>
-    <div class="grid grid-cols-2 gap-3 mt-4">
-      <div class="bg-black/50 p-3 rounded-xl border border-white/5">
-        <p class="text-[10px] text-white/40">TOTAL REFERRALS</p>
-        <p id="refCount" class="text-lg font-black">0</p>
-      </div>
-      <div class="bg-black/50 p-3 rounded-xl border border-white/5">
-        <p class="text-[10px] text-white/40">PEOPLE YOU INVITED</p>
-        <p id="refCodeLabel" class="text-[11px] font-bold text-blue-400 mt-1">CODE: ---</p>
-      </div>
-    </div>
-    <div id="refList" class="mt-3 text-[11px] bg-black/30 p-3 rounded-xl border border-white/5 min-h-[40px]">Loading...</div>
-    <p class="text-[10px] text-white/30 mt-3">You were referred by: <span id="referredBy" class="text-white font-bold">-</span></p>
-  </div>
+<!-- REFERRAL -->
+<div class="mt-5 bg-[#121a33] rounded-[20px] p-4 border border-white/10">
+<p class="text-sm font-bold">🔗 Your Referral Link</p>
+<p class="text-[11px] text-white/40 mb-2">Share & earn 10 PTS per friend</p>
+<div class="flex gap-2"><div id="myRefLink" class="flex-1 bg-black p-3 rounded-xl text-xs break-all border border-white/5 text-blue-300">Loading...</div><button onclick="copyRef()" class="bg-white text-black px-4 rounded-xl text-xs font-black">COPY</button></div>
+<div class="grid grid-cols-2 gap-3 mt-3"><div class="bg-black/50 p-3 rounded-xl border border-white/5"><p class="text-[10px] text-white/40">REFERRALS</p><p id="refCount" class="text-lg font-black">0</p></div><div class="bg-black/50 p-3 rounded-xl border border-white/5"><p class="text-[10px] text-white/40">YOUR CODE</p><p id="refCodeLabel" class="text-[11px] font-bold text-blue-400 mt-1">---</p></div></div>
+<div id="refList" class="mt-3 text-[11px] bg-black/30 p-3 rounded-xl border border-white/5">Loading...</div>
+<p class="text-[10px] text-white/30 mt-2">Referred by: <span id="referredBy" class="font-bold text-white">-</span></p>
+</div>
+</div>
+
+<!-- TASKS PAGE -->
+<div id="tasksPage" class="hidden">
+<div class="bg-[#121a33] rounded-[20px] p-4 border border-white/10">
+<h3 class="font-bold mb-3">📋 Daily Tasks</h3>
+<div class="space-y-3">
+<div class="flex justify-between items-center bg-black/40 p-3 rounded-xl border border-white/5"><div><p class="text-sm font-bold">Watch 5 Ads</p><p class="text-[11px] text-white/40">+100 Bonus</p></div><button class="bg-blue-600 px-4 py-1.5 rounded-full text-xs font-bold" onclick="alert('Watch 5 ads in Home to complete!')">GO</button></div>
+<div class="flex justify-between items-center bg-black/40 p-3 rounded-xl border border-white/5"><div><p class="text-sm font-bold">Invite 1 Friend</p><p class="text-[11px] text-white/40">+10 PTS</p></div><button class="bg-blue-600 px-4 py-1.5 rounded-full text-xs font-bold" onclick="showPage('home')">INVITE</button></div>
+<div class="flex justify-between items-center bg-black/40 p-3 rounded-xl border border-white/5"><div><p class="text-sm font-bold">Follow on Telegram</p><p class="text-[11px] text-white/40">+50 PTS</p></div><button class="bg-blue-600 px-4 py-1.5 rounded-full text-xs font-bold" onclick="window.open('https://t.me/','_blank')">JOIN</button></div>
+</div>
+</div>
+</div>
+
+<!-- WALLET PAGE -->
+<div id="walletPage" class="hidden">
+<div class="bg-[#121a33] rounded-[20px] p-4 border border-white/10 text-center">
+<p class="text-[11px] text-white/40">TOTAL BALANCE</p>
+<p id="walletPts" class="text-3xl font-black mt-1">0 PTS</p>
+<p class="text-xs text-white/30 mt-1">1,000 PTS = $1.00</p>
+<div class="mt-5 space-y-3 text-left">
+<input placeholder="PayPal Email or Bank Account" class="w-full p-3 rounded-xl bg-black border border-white/10 text-sm">
+<input placeholder="Amount (min 5000 PTS)" class="w-full p-3 rounded-xl bg-black border border-white/10 text-sm">
+<button onclick="alert('Withdraw coming soon — you need 5000 PTS minimum! Keep earning!')" class="w-full bg-blue-600 py-3 rounded-xl font-black">REQUEST WITHDRAW</button>
+</div>
+<p class="text-[10px] text-white/30 mt-3">Withdrawals processed within 24-48h</p>
+</div>
+</div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="fixed bottom-0 left-0 right-0 bg-[#121a33] border-t border-white/10 flex justify-around py-2 max-w-md mx-auto">
+<button onclick="showPage('home')" id="navHome" class="flex flex-col items-center px-6 py-1 nav-active"><span class="text-xl">🏠</span><span class="text-[10px] mt-1">Home</span></button>
+<button onclick="showPage('tasks')" id="navTasks" class="flex flex-col items-center px-6 py-1 text-white/40"><span class="text-xl">📋</span><span class="text-[10px] mt-1">Tasks</span></button>
+<button onclick="showPage('wallet')" id="navWallet" class="flex flex-col items-center px-6 py-1 text-white/40"><span class="text-xl">💼</span><span class="text-[10px] mt-1">Wallet</span></button>
 </div>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDmMIcYO12TPriCK7_LdjsI4hvqBDLjYMI",
-  authDomain: "blunboz.firebaseapp.com",
-  projectId: "blunboz",
-  storageBucket: "blunboz.firebasestorage.app",
-  messagingSenderId: "273818323763",
-  appId: "1:273818323763:web:ce179709a1defb638ecc46"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// GET REFERRAL FROM LINK?ref=CODE
-let refFromUrl = new URLSearchParams(window.location.search).get('ref') || localStorage.getItem('blunboz_ref') || 'BLUNBOZ';
-refFromUrl = refFromUrl.toUpperCase();
-localStorage.setItem('blunboz_ref', refFromUrl);
-document.getElementById('refInviteCode').innerText = refFromUrl;
-
-let isLogin = false;
-let currentUserData = null;
-
-function toggleMode(){
-  isLogin =!isLogin;
-  document.getElementById('mainBtn').innerText = isLogin? 'LOG IN' : 'SIGN UP & START EARNING';
-  document.getElementById('toggleBtn').innerText = isLogin? 'SIGN UP' : 'LOG IN';
-  document.getElementById('switchText').innerText = isLogin? "Don't have account?" : "Already have account?";
-  document.getElementById('authError').classList.add('hidden');
-}
-
-function handleAuth(){
-  if(isLogin) logIn(); else signUp();
-}
-
-function showErr(msg){
-  const el = document.getElementById('authError');
-  el.innerText = msg;
-  el.classList.remove('hidden');
-}
-
-auth.onAuthStateChanged(async (user)=>{
-  if(!user){
-    document.getElementById('authModal').classList.remove('hidden');
-    return;
-  }
-  document.getElementById('authModal').classList.add('hidden');
-  const docRef = db.collection('users').doc(user.uid);
-  const docSnap = await docRef.get();
-  if(!docSnap.exists){
-    const myCode = user.email.split('@')[0].toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6) + Math.floor(100+Math.random()*900);
-    await docRef.set({
-      email: user.email,
-      points: 0,
-      myRefCode: myCode,
-      refBy: localStorage.getItem('blunboz_ref') || 'BLUNBOZ',
-      createdAt: new Date(),
-      adsWatched: 0
-    });
-  }
-  currentUserData = (await docRef.get()).data();
-  document.getElementById('pts').innerText = currentUserData.points + ' PTS';
-  document.getElementById('adCount').innerText = (currentUserData.adsWatched || 0) + ' / 30';
-  document.getElementById('referredBy').innerText = currentUserData.refBy || 'BLUNBOZ';
-  document.getElementById('refCodeLabel').innerText = 'CODE: ' + (currentUserData.myRefCode || '---');
-  document.getElementById('myRefLink').innerText = 'https://blunboz.vercel.app/?ref=' + (currentUserData.myRefCode || 'BLUNBOZ');
-  loadMyReferrals(currentUserData.myRefCode);
-});
-
-async function loadMyReferrals(myCode){
-  if(!myCode) return;
-  const snap = await db.collection('users').where('refBy','==',myCode).get();
-  document.getElementById('refCount').innerText = snap.size;
-  if(snap.size > 0){
-    let html = '';
-    snap.forEach(doc=>{
-      html += `<div class="flex justify-between py-1.5 border-b border-white/5 last:border-0"><span>${doc.data().email}</span><span class="text-green-400">✓</span></div>`;
-    });
-    document.getElementById('refList').innerHTML = html;
-  } else {
-    document.getElementById('refList').innerHTML = '<span class="text-white/30">No referrals yet — share your link to earn!</span>';
-  }
-}
-
-function copyRef(){
-  navigator.clipboard.writeText(document.getElementById('myRefLink').innerText);
-  alert('✅ Copied! Now share to friends');
-}
-
-function signUp(){
-  const e = document.getElementById('email').value.trim();
-  const p = document.getElementById('password').value;
-  if(!e ||!p) return showErr('Please fill email & password');
-  if(p.length < 6) return showErr('Password must be at least 6 characters');
-  if(!e.includes('@') ||!e.includes('.')) return showErr('Enter valid email like name@gmail.com');
-  document.getElementById('mainBtn').innerText = 'Creating...';
-  auth.createUserWithEmailAndPassword(e,p).catch(err=> {
-    document.getElementById('mainBtn').innerText = 'SIGN UP & START EARNING';
-    showErr(err.message.replace('Firebase:','').trim());
-  });
-}
-
-function logIn(){
-  const e = document.getElementById('email').value.trim();
-  const p = document.getElementById('password').value;
-  if(!e ||!p) return showErr('Please fill email & password');
-  document.getElementById('mainBtn').innerText = 'Logging in...';
-  auth.signInWithEmailAndPassword(e,p).catch(err=> {
-    document.getElementById('mainBtn').innerText = 'LOG IN';
-    showErr(err.message.replace('Firebase:','').replace('(auth/invalid-email)','Invalid email').trim());
-  });
-}
-
-function forgotPass(){
-  const e = document.getElementById('email').value.trim();
-  if(!e) return showErr('Enter your email first, then click Forgot Password');
-  auth.sendPasswordResetEmail(e).then(()=>alert('✅ Reset link sent to '+e+' — check inbox & spam')).catch(err=>showErr(err.message));
-}
-
-function logOut(){ auth.signOut().then(()=>location.reload()); }
-
-let watching=false;
-function startAd(){
-  if(watching) return;
-  if(currentUserData && currentUserData.adsWatched >= 30) return alert('Daily limit 30 ads reached');
-  watching=true;
-  let timeLeft=15;
-  const btn=document.getElementById('claimBtn');
-  const prog=document.getElementById('progressBar');
-  const txt=document.getElementById('timerText');
-  const box=document.getElementById('realAdContainer');
-  btn.disabled=true;
-  let interval=setInterval(()=>{
-    timeLeft--;
-    txt.innerText='Watching... '+timeLeft+'s';
-    btn.innerText='WAIT '+timeLeft+'s...';
-    prog.style.width=((15-timeLeft)/15*100)+'%';
-    box.innerHTML=`<p class="text-3xl animate-pulse">▶️</p><p class="text-xs mt-2">Ad Playing... ${timeLeft}s</p>`;
-    if(timeLeft<=0){
-      clearInterval(interval);
-      watching=false;
-      txt.innerText='✅ Ad Completed! Claim now';
-      prog.style.width='100%';
-      btn.disabled=false;
-      btn.innerText='CLAIM 50 PTS ✅';
-      btn.className='w-full bg-green-500 py-4 rounded-2xl font-black mt-4 animate-pulse';
-      btn.onclick=claimPoints;
-      box.innerHTML=`<p class="text-2xl">✅</p><p class="text-sm text-green-400 mt-2">Finished! Click CLAIM</p>`;
-    }
-  },1000);
-}
-
-async function claimPoints(){
-  const docRef=db.collection('users').doc(auth.currentUser.uid);
-  await docRef.update({ points: firebase.firestore.FieldValue.increment(50), adsWatched: firebase.firestore.FieldValue.increment(1) });
-  currentUserData.points+=50;
-  currentUserData.adsWatched=(currentUserData.adsWatched||0)+1;
-  document.getElementById('pts').innerText=currentUserData.points+' PTS';
-  document.getElementById('adCount').innerText=currentUserData.adsWatched+' / 30';
-  const btn=document.getElementById('claimBtn');
-  btn.innerText='WATCH AD (15s) - 50 PTS';
-  btn.className='w-full bg-blue-600 py-4 rounded-2xl font-black mt-4';
-  btn.onclick=startAd;
-  document.getElementById('timerText').innerText='Ready to watch next';
-  document.getElementById('progressBar').style.width='0%';
-  document.getElementById('realAdContainer').innerHTML=`<p class="text-2xl">▶️</p><p class="text-xs text-white/30 mt-2">+50 PTS added!</p>`;
-}
+const firebaseConfig={apiKey:"AIzaSyDmMIcYO12TPriCK7_LdjsI4hvqBDLjYMI",authDomain:"blunboz.firebaseapp.com",projectId:"blunboz",storageBucket:"blunboz.firebasestorage.app",messagingSenderId:"273818323763",appId:"1:273818323763:web:ce179709a1defb638ecc46"};
+firebase.initializeApp(firebaseConfig);const auth=firebase.auth();const db=firebase.firestore();
+let refFromUrl=new URLSearchParams(location.search).get('ref')||localStorage.getItem('blunboz_ref')||'BLUNBOZ';refFromUrl=refFromUrl.toUpperCase();localStorage.setItem('blunboz_ref',refFromUrl);document.getElementById('refInviteCode').innerText=refFromUrl;
+let isLogin=false,currentUserData=null;
+function showPage(p){document.getElementById('homePage').classList.add('hidden');document.getElementById('tasksPage').classList.add('hidden');document.getElementById('walletPage').classList.add('hidden');document.getElementById('navHome').classList.remove('nav-active');document.getElementById('navTasks').classList.remove('nav-active');document.getElementById('navWallet').classList.remove('nav-active');document.getElementById('navHome').classList.add('text-white/40');document.getElementById('navTasks').classList.add('text-white/40');document.getElementById('navWallet').classList.add('text-white/40');if(p==='home'){document.getElementById('homePage').classList.remove('hidden');document.getElementById('navHome').classList.add('nav-active');document.getElementById('navHome').classList.remove('text-white/40');}if(p==='tasks'){document.getElementById('tasksPage').classList.remove('hidden');document.getElementById('navTasks').classList.add('nav-active');document.getElementById('navTasks').classList.remove('text-white/40');}if(p==='wallet'){document.getElementById('walletPage').classList.remove('hidden');document.getElementById('navWallet').classList.add('nav-active');document.getElementById('navWallet').classList.remove('text-white/40');}}
+function toggleMode(){isLogin=!isLogin;document.getElementById('mainBtn').innerText=isLogin?'LOG IN':'SIGN UP & START EARNING';document.getElementById('toggleBtn').innerText=isLogin?'SIGN UP':'LOG IN';document.getElementById('switchText').innerText=isLogin?"Don't have account?":"Already have account?";document.getElementById('authError').classList.add('hidden');}
+function handleAuth(){isLogin?logIn():signUp();}function showErr(m){let e=document.getElementById('authError');e.innerText=m;e.classList.remove('hidden');}
+auth.onAuthStateChanged(async user=>{if(!user){document.getElementById('authModal').classList.remove('hidden');return;}document.getElementById('authModal').classList.add('hidden');const ref=db.collection('users').doc(user.uid);const snap=await ref.get();if(!snap.exists){const myCode=user.email.split('@')[0].toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6)+Math.floor(100+Math.random()*900);await ref.set({email:user.email,points:0,myRefCode:myCode,refBy:localStorage.getItem('blunboz_ref')||'BLUNBOZ',createdAt:new Date(),adsWatched:0});}currentUserData=(await ref.get()).data();document.getElementById('pts').innerText=currentUserData.points+' PTS';document.getElementById('walletPts').innerText=currentUserData.points+' PTS';document.getElementById('adCount').innerText=(currentUserData.adsWatched||0)+' / 30';document.getElementById('referredBy').innerText=currentUserData.refBy;document.getElementById('refCodeLabel').innerText=currentUserData.myRefCode;document.getElementById('myRefLink').innerText='https://blunboz.vercel.app/?ref='+currentUserData.myRefCode;const s=await db.collection('users').where('refBy','==',currentUserData.myRefCode).get();document.getElementById('refCount').innerText=s.size;document.getElementById('refList').innerHTML=s.size?s.docs.map(d=>`• ${d.data().email}`).join('<br>'):'No referrals yet — share your link!';});
+function copyRef(){navigator.clipboard.writeText(document.getElementById('myRefLink').innerText);alert('Copied!');}
+function signUp(){const e=email.value.trim(),p=password.value;if(!e||!p)return showErr('Fill email & password');if(p.length<6)return showErr('Password min 6');auth.createUserWithEmailAndPassword(e,p).catch(err=>showErr(err.message));}
+function logIn(){const e=email.value.trim(),p=password.value;if(!e||!p)return showErr('Fill email & password');auth.signInWithEmailAndPassword(e,p).catch(err=>showErr(err.message));}
+function forgotPass(){if(!email.value)return showErr('Enter email first');auth.sendPasswordResetEmail(email.value).then(()=>alert('Reset sent')).catch(err=>showErr(err.message));}
+function logOut(){auth.signOut().then(()=>location.reload());}
+let watching=false;function startAd(){if(watching)return;watching=true;let t=15;const btn=claimBtn,prog=progressBar,txt=timerText,box=realAdContainer;btn.disabled=true;let i=setInterval(()=>{t--;txt.innerText='Watching... '+t+'s';btn.innerText='WAIT '+t+'s...';prog.style.width=((15-t)/15*100)+'%';box.innerHTML=`<p class="text-3xl animate-pulse">▶️</p><p class="text-xs mt-2">${t}s</p>`;if(t<=0){clearInterval(i);watching=false;txt.innerText='✅ Ad Completed! Claim now';prog.style.width='100%';btn.disabled=false;btn.innerText='CLAIM 50 PTS ✅';btn.className='w-full bg-green-500 py-4 rounded-2xl font-black mt-4 animate-pulse';btn.onclick=claimPoints;box.innerHTML=`<p class="text-2xl">✅</p><p class="text-sm text-green-400">Click CLAIM</p>`;}},1000);}
+async function claimPoints(){await db.collection('users').doc(auth.currentUser.uid).update({points:firebase.firestore.FieldValue.increment(50),adsWatched:firebase.firestore.FieldValue.increment(1)});currentUserData.points+=50;pts.innerText=currentUserData.points+' PTS';walletPts.innerText=currentUserData.points+' PTS';adCount.innerText=(currentUserData.adsWatched||0)+1+' / 30';claimBtn.innerText='WATCH AD (15s) - 50 PTS';claimBtn.className='w-full bg-blue-600 py-4 rounded-2xl font-black mt-4';claimBtn.onclick=startAd;timerText.innerText='Ready';progressBar.style.width='0%';realAdContainer.innerHTML='<p class="text-3xl">▶️</p><p class="text-xs text-white/30 mt-2">+50 PTS added!</p>';}
 </script>
-</body>
-        </html>
+</body></html>

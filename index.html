@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Blunboz Blue - Earn</title>
+<title>Blunboz - Earn</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -10,13 +10,19 @@
 </head>
 <body class="bg-[#0a0f1f] text-white min-h-screen font-sans">
 
+<!-- LOGIN POPUP - FIXED -->
 <div id="authModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-[999] hidden flex items-center justify-center p-4">
   <div class="bg-[#121a33] p-6 rounded-[20px] w-full max-w-sm border border-white/10">
-    <h2 class="text-xl font-bold mb-1 text-center">Welcome to Blunboz Blue 🔵</h2>
+    <h2 class="text-xl font-bold mb-1 text-center">Welcome to Blunboz</h2>
     <p class="text-xs text-white/40 text-center mb-4">Login to start earning</p>
     <input id="email" placeholder="Email" class="w-full p-3.5 rounded-xl bg-black/50 border border-white/10 mb-3 outline-none focus:border-blue-500">
-    <input id="password" type="password" placeholder="Password" class="w-full p-3.5 rounded-xl bg-black/50 border border-white/10 mb-4 outline-none focus:border-blue-500">
-    <button onclick="signUp()" class="w-full bg-blue-600 hover:bg-blue-700 py-3.5 rounded-xl font-bold mb-2">SIGN UP & START EARNING</button>
+    <input id="password" type="password" placeholder="Password" class="w-full p-3.5 rounded-xl bg-black/50 border border-white/10 mb-2 outline-none focus:border-blue-500">
+
+    <div class="text-right mb-4">
+      <button onclick="forgotPass()" class="text-[11px] text-blue-400 hover:text-blue-300">Forgot Password?</button>
+    </div>
+
+    <button onclick="signUp()" class="w-full bg-blue-600 hover:bg-blue-700 py-3.5 rounded-xl font-bold mb-2 transition">SIGN UP & START EARNING</button>
     <button onclick="logIn()" class="w-full bg-white/10 py-3.5 rounded-xl font-bold">LOG IN</button>
     <p class="text-[11px] text-center mt-4 text-white/30">Referral locked: <span class="text-blue-400 font-bold">BLUNBOZ</span></p>
   </div>
@@ -24,7 +30,7 @@
 
 <div class="p-4 max-w-md mx-auto">
   <div class="flex justify-between items-center mb-6 mt-2">
-    <h1 class="font-black text-lg tracking-wide">BLUNBOZ <span class="text-blue-500">BLUE</span></h1>
+    <h1 class="font-black text-lg tracking-wide">BLUNBOZ</h1>
     <div class="flex gap-2 items-center">
       <span id="pts" class="bg-blue-600 px-3 py-1.5 rounded-full text-sm font-bold">0 PTS</span>
       <button id="ownerBtn" onclick="openOwner()" class="hidden bg-yellow-400 text-black px-3 py-1.5 rounded-full text-[11px] font-black animate-pulse">OWNER</button>
@@ -61,7 +67,7 @@
       <button onclick="document.getElementById('ownerPanel').classList.add('hidden')" class="bg-white/10 px-4 py-2 rounded-xl text-sm">Close ✕</button>
     </div>
     <div class="bg-yellow-400/10 border border-yellow-400/20 p-3 rounded-xl mb-4">
-      <p class="text-xs text-yellow-300">Owner: sammgodpower@gmail.com</p>
+      <p class="text-xs text-yellow-300">Owner: sammgodpower@gmail.com — Only you can see this</p>
     </div>
     <div id="allUsers" class="space-y-2 text-sm"></div>
   </div>
@@ -113,6 +119,13 @@ function logIn(){
   if(!e||!p) return alert("Fill email & password");
   auth.signInWithEmailAndPassword(e,p).catch(err=>alert(err.message));
 }
+function forgotPass(){
+  const e = document.getElementById('email').value;
+  if(!e) return alert("Enter your email first, then click Forgot Password");
+  auth.sendPasswordResetEmail(e)
+  .then(()=> alert("✅ Reset link sent to " + e + " - Check inbox & spam"))
+  .catch(err=> alert(err.message));
+}
 
 let watching=false;
 function startAd(){
@@ -152,16 +165,3 @@ async function claimPoints(){
   document.getElementById('timerText').innerText="Ready to watch next ad";
   document.getElementById('progressBar').style.width="0%";
   document.getElementById('realAdContainer').innerHTML=`<p class='text-2xl mb-2'>▶️</p><p class='text-xs text-white/30'>+50 PTS added!</p>`;
-}
-function openOwner(){
-  if(auth.currentUser.email.toLowerCase()!==OWNER_EMAIL.toLowerCase()) return;
-  document.getElementById('ownerPanel').classList.remove('hidden'); loadAllUsers();
-}
-async function loadAllUsers(){
-  const snap=await db.collection('users').orderBy('createdAt','desc').limit(50).get();
-  let html=""; snap.forEach(doc=>{ const d=doc.data(); html+=`<div class='bg-[#121a33] p-3 rounded-xl border border-white/5 flex justify-between'><span>${d.email}</span><span class='text-blue-400 font-bold'>${d.points} PTS</span></div>`; });
-  document.getElementById('allUsers').innerHTML=html||"No users yet";
-}
-</script>
-</body>
-  </html>

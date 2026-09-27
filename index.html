@@ -1,110 +1,104 @@
 <!DOCTYPE html>
 <html><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Blunboz - Earn</title>
+<title>Blunboz Ultra</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<style>.nav-active{color:#3b82f6!important}</style>
+<style>
+.ad-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+.ad-dot{height:8px;border-radius:99px;background:rgba(255,255,255,0.1)}
+.ad-dot.filled{background:#3b82f6;box-shadow:0 0 8px #3b82f6}
+.nav-active{color:#3b82f6!important;opacity:1!important}
+</style>
 </head>
-<body class="bg-[#0a0f1f] text-white min-h-screen font-sans pb-20">
+<body class="bg-[#070d1f] text-white min-h-screen pb-[90px]">
 
-<!-- AUTH MODAL -->
-<div id="authModal" class="fixed inset-0 bg-black/95 backdrop-blur-md z-[999] hidden flex items-center justify-center p-4">
-<div class="bg-[#121a33] p-6 rounded-[24px] w-full max-w-sm border border-white/10">
+<!-- AUTH -->
+<div id="authModal" class="fixed inset-0 bg-black/95 z-[999] hidden flex items-center justify-center p-4">
+<div class="bg-[#111b36] p-6 rounded-[24px] w-full max-w-sm border border-white/10">
 <h2 class="text-[22px] font-black text-center">Welcome to Blunboz</h2>
-<div class="bg-blue-600/15 border border-blue-500/30 p-3 rounded-xl my-4 text-center">
-<p class="text-[10px] text-blue-300 tracking-widest">YOU WERE INVITED BY</p>
-<p id="refInviteCode" class="text-[15px] font-black text-blue-400 mt-1">BLUNBOZ</p>
-</div>
-<input id="email" type="email" placeholder="Email" class="w-full p-3.5 rounded-xl bg-black/60 border border-white/10 mb-3 outline-none text-sm">
-<input id="password" type="password" placeholder="Password" class="w-full p-3.5 rounded-xl bg-black/60 border border-white/10 mb-2 outline-none text-sm">
-<p id="authError" class="text-[11px] text-red-400 mb-2 hidden bg-red-500/10 p-2 rounded-lg border border-red-500/20"></p>
-<div class="text-right mb-3"><button onclick="forgotPass()" class="text-[11px] text-blue-400">Forgot Password?</button></div>
+<div class="bg-blue-600/10 border border-blue-500/20 p-3 rounded-xl my-4 text-center"><p class="text-[10px] text-blue-300">INVITED BY</p><p id="refInviteCode" class="font-black text-blue-400">BLUNBOZ</p></div>
+<input id="email" placeholder="Email" class="w-full p-3.5 rounded-xl bg-black/60 border border-white/10 mb-3 text-sm outline-none">
+<input id="password" type="password" placeholder="Password (min 6)" class="w-full p-3.5 rounded-xl bg-black/60 border border-white/10 mb-2 text-sm outline-none">
+<p id="authError" class="text-[11px] text-red-400 hidden bg-red-500/10 p-2 rounded-lg mb-2"></p>
+<div class="text-right mb-3"><button onclick="forgotPass()" class="text-[11px] text-blue-400">Forgot?</button></div>
 <button id="mainBtn" onclick="handleAuth()" class="w-full bg-blue-600 py-3.5 rounded-xl font-black">SIGN UP & START EARNING</button>
-<div class="flex justify-center gap-2 mt-3 text-[11px]"><span class="text-white/40" id="switchText">Already have account?</span><button onclick="toggleMode()" id="toggleBtn" class="text-blue-400 font-bold">LOG IN</button></div>
+<div class="flex justify-center gap-2 mt-3 text-[11px]"><span id="switchText" class="text-white/40">Already have account?</span><button onclick="toggleMode()" id="toggleBtn" class="text-blue-400 font-bold">LOG IN</button></div>
 </div></div>
 
-<!-- HEADER -->
 <div class="p-4 max-w-md mx-auto flex justify-between items-center">
-<h1 class="font-black text-[20px] tracking-wider">BLUNBOZ</h1>
-<div class="flex gap-2 items-center"><span id="pts" class="bg-blue-600 px-4 py-1.5 rounded-full text-sm font-bold">0 PTS</span><button onclick="logOut()" class="bg-white/10 px-3 py-1.5 rounded-full text-[11px]">Logout</button></div>
+<h1 class="font-black text-xl tracking-widest">BLUNBOZ</h1>
+<div class="flex gap-2"><span id="pts" class="bg-blue-600 px-4 py-1.5 rounded-full text-sm font-bold">0 PTS</span><button onclick="logOut()" class="bg-white/10 px-3 py-1.5 rounded-full text-[11px]">Logout</button></div>
 </div>
 
 <div class="max-w-md mx-auto px-4">
 
-<!-- HOME PAGE -->
+<!-- HOME -->
 <div id="homePage">
-<div class="bg-[#121a33] rounded-[24px] p-4 border border-white/10">
-<div class="flex justify-between text-sm mb-3"><p id="timerText" class="font-bold">Ready to watch</p><p id="adCount" class="text-white/50 font-mono">0 / 30</p></div>
-<div class="w-full h-2 bg-white/10 rounded-full mb-4 overflow-hidden"><div id="progressBar" class="h-full bg-blue-500 transition-all" style="width:0%"></div></div>
-<div id="realAdContainer" class="h-52 bg-black rounded-2xl flex flex-col items-center justify-center border border-white/5"><p class="text-3xl">▶️</p><p class="text-xs text-white/30 mt-2">Watch 15s = 50 PTS</p></div>
-<button id="claimBtn" onclick="startAd()" class="w-full bg-blue-600 py-4 rounded-2xl font-black mt-4">WATCH AD (15s) - 50 PTS</button>
+<div class="bg-[#121f3e]/80 rounded-[28px] p-5 border border-white/10 backdrop-blur">
+<div class="flex justify-between items-center mb-3"><p id="timerText" class="font-bold text-[15px]">Ready to watch</p><p id="adCount" class="text-white/50 text-sm font-mono">0 / 30</p></div>
+<div class="ad-grid mb-4" id="adGrid"></div>
+<div class="w-full h-1.5 bg-white/10 rounded-full mb-4 overflow-hidden"><div id="progressBar" class="h-full bg-blue-500" style="width:0%"></div></div>
+<div id="realAdContainer" class="h-52 bg-black rounded-[20px] flex flex-col items-center justify-center border border-white/5"><p class="text-3xl">▶️</p><p class="text-xs text-white/30 mt-2">Watch 15s = 50 PTS</p></div>
+<button id="claimBtn" onclick="startAd()" class="w-full bg-[#2a5bff] hover:bg-blue-700 py-4 rounded-2xl font-black mt-4 tracking-wide">WATCH AD (15s) - 50 PTS</button>
 </div>
 
-<!-- REFERRAL -->
-<div class="mt-5 bg-[#121a33] rounded-[20px] p-4 border border-white/10">
-<p class="text-sm font-bold">🔗 Your Referral Link</p>
-<p class="text-[11px] text-white/40 mb-2">Share & earn 10 PTS per friend</p>
-<div class="flex gap-2"><div id="myRefLink" class="flex-1 bg-black p-3 rounded-xl text-xs break-all border border-white/5 text-blue-300">Loading...</div><button onclick="copyRef()" class="bg-white text-black px-4 rounded-xl text-xs font-black">COPY</button></div>
-<div class="grid grid-cols-2 gap-3 mt-3"><div class="bg-black/50 p-3 rounded-xl border border-white/5"><p class="text-[10px] text-white/40">REFERRALS</p><p id="refCount" class="text-lg font-black">0</p></div><div class="bg-black/50 p-3 rounded-xl border border-white/5"><p class="text-[10px] text-white/40">YOUR CODE</p><p id="refCodeLabel" class="text-[11px] font-bold text-blue-400 mt-1">---</p></div></div>
-<div id="refList" class="mt-3 text-[11px] bg-black/30 p-3 rounded-xl border border-white/5">Loading...</div>
-<p class="text-[10px] text-white/30 mt-2">Referred by: <span id="referredBy" class="font-bold text-white">-</span></p>
+<div class="mt-5 bg-[#121f3e]/60 rounded-[20px] p-4 border border-white/10">
+<p class="text-sm font-bold flex items-center gap-2">🔗 Your Referral Link</p>
+<p class="text-[11px] text-white/40 mb-3">Share & earn 10 PTS per friend — Ultra Bonus</p>
+<div class="flex gap-2"><div id="myRefLink" class="flex-1 bg-black p-3 rounded-xl text-xs break-all border border-white/5 text-blue-300">Loading...</div><button onclick="copyRef()" class="bg-white text-black px-5 rounded-xl text-xs font-black">COPY</button></div>
+<div class="grid grid-cols-2 gap-3 mt-4"><div class="bg-black/50 p-3 rounded-xl border border-white/5"><p class="text-[10px] text-white/40">REFERRALS</p><p id="refCount" class="text-xl font-black">0</p></div><div class="bg-black/50 p-3 rounded-xl border border-white/5"><p class="text-[10px] text-white/40">YOUR CODE</p><p id="refCodeLabel" class="text-sm font-black text-blue-400 mt-1">---</p></div></div>
+<div id="refList" class="mt-3 text-[11px] bg-black/30 p-3 rounded-xl">No referrals yet</div>
 </div>
 </div>
 
-<!-- TASKS PAGE -->
+<!-- TASKS -->
 <div id="tasksPage" class="hidden">
-<div class="bg-[#121a33] rounded-[20px] p-4 border border-white/10">
-<h3 class="font-bold mb-3">📋 Daily Tasks</h3>
+<div class="bg-[#121f3e]/80 rounded-[28px] p-5 border border-white/10">
+<h3 class="font-bold mb-4 flex gap-2">📋 Daily Tasks</h3>
 <div class="space-y-3">
-<div class="flex justify-between items-center bg-black/40 p-3 rounded-xl border border-white/5"><div><p class="text-sm font-bold">Watch 5 Ads</p><p class="text-[11px] text-white/40">+100 Bonus</p></div><button class="bg-blue-600 px-4 py-1.5 rounded-full text-xs font-bold" onclick="alert('Watch 5 ads in Home to complete!')">GO</button></div>
-<div class="flex justify-between items-center bg-black/40 p-3 rounded-xl border border-white/5"><div><p class="text-sm font-bold">Invite 1 Friend</p><p class="text-[11px] text-white/40">+10 PTS</p></div><button class="bg-blue-600 px-4 py-1.5 rounded-full text-xs font-bold" onclick="showPage('home')">INVITE</button></div>
-<div class="flex justify-between items-center bg-black/40 p-3 rounded-xl border border-white/5"><div><p class="text-sm font-bold">Follow on Telegram</p><p class="text-[11px] text-white/40">+50 PTS</p></div><button class="bg-blue-600 px-4 py-1.5 rounded-full text-xs font-bold" onclick="window.open('https://t.me/','_blank')">JOIN</button></div>
+<div class="flex justify-between items-center bg-black/50 p-4 rounded-2xl border border-white/5"><div><p class="font-bold text-sm">Watch 5 Ads</p><p class="text-[11px] text-white/40">+100 Bonus PTS</p></div><button onclick="showPage('home')" class="bg-blue-600 px-5 py-2 rounded-full text-xs font-black">GO</button></div>
+<div class="flex justify-between items-center bg-black/50 p-4 rounded-2xl border border-white/5"><div><p class="font-bold text-sm">Invite 1 Friend</p><p class="text-[11px] text-white/40">+10 PTS</p></div><button onclick="showPage('home')" class="bg-blue-600 px-5 py-2 rounded-full text-xs font-black">INVITE</button></div>
+<div class="flex justify-between items-center bg-black/50 p-4 rounded-2xl border border-white/5"><div><p class="font-bold text-sm">Follow on Telegram</p><p class="text-[11px] text-white/40">+50 PTS</p></div><button onclick="window.open('https://t.me/','_blank')" class="bg-blue-600 px-5 py-2 rounded-full text-xs font-black">JOIN</button></div>
 </div>
 </div>
 </div>
 
-<!-- WALLET PAGE -->
+<!-- WALLET - ULTRA PATTERN -->
 <div id="walletPage" class="hidden">
-<div class="bg-[#121a33] rounded-[20px] p-4 border border-white/10 text-center">
-<p class="text-[11px] text-white/40">TOTAL BALANCE</p>
-<p id="walletPts" class="text-3xl font-black mt-1">0 PTS</p>
-<p class="text-xs text-white/30 mt-1">1,000 PTS = $1.00</p>
-<div class="mt-5 space-y-3 text-left">
-<input placeholder="PayPal Email or Bank Account" class="w-full p-3 rounded-xl bg-black border border-white/10 text-sm">
-<input placeholder="Amount (min 5000 PTS)" class="w-full p-3 rounded-xl bg-black border border-white/10 text-sm">
-<button onclick="alert('Withdraw coming soon — you need 5000 PTS minimum! Keep earning!')" class="w-full bg-blue-600 py-3 rounded-xl font-black">REQUEST WITHDRAW</button>
+<div class="bg-[#121f3e]/80 rounded-[28px] p-6 border border-white/10 text-center">
+<p class="text-[11px] tracking-widest text-white/40">TOTAL BALANCE</p>
+<p id="walletPts" class="text-4xl font-black mt-2">0 PTS</p>
+<p id="walletUSD" class="text-sm text-white/30 mt-1">≈ $0.00</p>
+<div class="grid grid-cols-3 gap-2 mt-5 text-[10px]"><div class="bg-black/40 p-3 rounded-xl border border-white/5"><p class="text-white/40">TODAY</p><p id="todayEarn" class="font-bold text-sm mt-1">0</p></div><div class="bg-black/40 p-3 rounded-xl border border-white/5"><p class="text-white/40">ADS</p><p id="totalAds" class="font-bold text-sm mt-1">0 / 30</p></div><div class="bg-black/40 p-3 rounded-xl border border-white/5"><p class="text-white/40">REFS</p><p id="totalRefs" class="font-bold text-sm mt-1">0</p></div></div>
+<div class="mt-6 space-y-3 text-left">
+<input id="withdrawAcc" placeholder="PayPal Email or Bank Account" class="w-full p-4 rounded-xl bg-black border border-white/10 text-sm">
+<input id="withdrawAmt" placeholder="Amount (min 5000 PTS)" type="number" class="w-full p-4 rounded-xl bg-black border border-white/10 text-sm">
+<button onclick="doWithdraw()" class="w-full bg-[#2a5bff] py-4 rounded-2xl font-black tracking-wide">REQUEST WITHDRAW</button>
+<p class="text-[10px] text-white/30 text-center">Withdrawals processed within 24-48h • 1,000 PTS = $1.00</p>
 </div>
-<p class="text-[10px] text-white/30 mt-3">Withdrawals processed within 24-48h</p>
+<div class="mt-5 text-left"><p class="text-xs font-bold mb-2">Recent Earnings</p><div id="historyList" class="space-y-2 text-[11px]"></div></div>
 </div>
 </div>
 
 </div>
 
 <!-- BOTTOM NAV -->
-<div class="fixed bottom-0 left-0 right-0 bg-[#121a33] border-t border-white/10 flex justify-around py-2 max-w-md mx-auto">
-<button onclick="showPage('home')" id="navHome" class="flex flex-col items-center px-6 py-1 nav-active"><span class="text-xl">🏠</span><span class="text-[10px] mt-1">Home</span></button>
-<button onclick="showPage('tasks')" id="navTasks" class="flex flex-col items-center px-6 py-1 text-white/40"><span class="text-xl">📋</span><span class="text-[10px] mt-1">Tasks</span></button>
-<button onclick="showPage('wallet')" id="navWallet" class="flex flex-col items-center px-6 py-1 text-white/40"><span class="text-xl">💼</span><span class="text-[10px] mt-1">Wallet</span></button>
+<div class="fixed bottom-0 left-0 right-0 bg-[#0d1731] border-t border-white/10 flex justify-around py-3 max-w-md mx-auto">
+<button onclick="showPage('home')" id="navHome" class="flex flex-col items-center nav-active"><span class="text-[22px]">🏠</span><span class="text-[10px] mt-1 font-bold">Home</span></button>
+<button onclick="showPage('tasks')" id="navTasks" class="flex flex-col items-center text-white/30"><span class="text-[22px]">📋</span><span class="text-[10px] mt-1">Tasks</span></button>
+<button onclick="showPage('wallet')" id="navWallet" class="flex flex-col items-center text-white/30"><span class="text-[22px]">💼</span><span class="text-[10px] mt-1">Wallet</span></button>
 </div>
 
 <script>
 const firebaseConfig={apiKey:"AIzaSyDmMIcYO12TPriCK7_LdjsI4hvqBDLjYMI",authDomain:"blunboz.firebaseapp.com",projectId:"blunboz",storageBucket:"blunboz.firebasestorage.app",messagingSenderId:"273818323763",appId:"1:273818323763:web:ce179709a1defb638ecc46"};
 firebase.initializeApp(firebaseConfig);const auth=firebase.auth();const db=firebase.firestore();
-let refFromUrl=new URLSearchParams(location.search).get('ref')||localStorage.getItem('blunboz_ref')||'BLUNBOZ';refFromUrl=refFromUrl.toUpperCase();localStorage.setItem('blunboz_ref',refFromUrl);document.getElementById('refInviteCode').innerText=refFromUrl;
+let refFromUrl=new URLSearchParams(location.search).get('ref')||localStorage.getItem('blunboz_ref')||'BLUNBOZ';refFromUrl=refFromUrl.toUpperCase();localStorage.setItem('blunboz_ref',refFromUrl);
+document.getElementById('refInviteCode').innerText=refFromUrl;
 let isLogin=false,currentUserData=null;
-function showPage(p){document.getElementById('homePage').classList.add('hidden');document.getElementById('tasksPage').classList.add('hidden');document.getElementById('walletPage').classList.add('hidden');document.getElementById('navHome').classList.remove('nav-active');document.getElementById('navTasks').classList.remove('nav-active');document.getElementById('navWallet').classList.remove('nav-active');document.getElementById('navHome').classList.add('text-white/40');document.getElementById('navTasks').classList.add('text-white/40');document.getElementById('navWallet').classList.add('text-white/40');if(p==='home'){document.getElementById('homePage').classList.remove('hidden');document.getElementById('navHome').classList.add('nav-active');document.getElementById('navHome').classList.remove('text-white/40');}if(p==='tasks'){document.getElementById('tasksPage').classList.remove('hidden');document.getElementById('navTasks').classList.add('nav-active');document.getElementById('navTasks').classList.remove('text-white/40');}if(p==='wallet'){document.getElementById('walletPage').classList.remove('hidden');document.getElementById('navWallet').classList.add('nav-active');document.getElementById('navWallet').classList.remove('text-white/40');}}
-function toggleMode(){isLogin=!isLogin;document.getElementById('mainBtn').innerText=isLogin?'LOG IN':'SIGN UP & START EARNING';document.getElementById('toggleBtn').innerText=isLogin?'SIGN UP':'LOG IN';document.getElementById('switchText').innerText=isLogin?"Don't have account?":"Already have account?";document.getElementById('authError').classList.add('hidden');}
-function handleAuth(){isLogin?logIn():signUp();}function showErr(m){let e=document.getElementById('authError');e.innerText=m;e.classList.remove('hidden');}
-auth.onAuthStateChanged(async user=>{if(!user){document.getElementById('authModal').classList.remove('hidden');return;}document.getElementById('authModal').classList.add('hidden');const ref=db.collection('users').doc(user.uid);const snap=await ref.get();if(!snap.exists){const myCode=user.email.split('@')[0].toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6)+Math.floor(100+Math.random()*900);await ref.set({email:user.email,points:0,myRefCode:myCode,refBy:localStorage.getItem('blunboz_ref')||'BLUNBOZ',createdAt:new Date(),adsWatched:0});}currentUserData=(await ref.get()).data();document.getElementById('pts').innerText=currentUserData.points+' PTS';document.getElementById('walletPts').innerText=currentUserData.points+' PTS';document.getElementById('adCount').innerText=(currentUserData.adsWatched||0)+' / 30';document.getElementById('referredBy').innerText=currentUserData.refBy;document.getElementById('refCodeLabel').innerText=currentUserData.myRefCode;document.getElementById('myRefLink').innerText='https://blunboz.vercel.app/?ref='+currentUserData.myRefCode;const s=await db.collection('users').where('refBy','==',currentUserData.myRefCode).get();document.getElementById('refCount').innerText=s.size;document.getElementById('refList').innerHTML=s.size?s.docs.map(d=>`• ${d.data().email}`).join('<br>'):'No referrals yet — share your link!';});
-function copyRef(){navigator.clipboard.writeText(document.getElementById('myRefLink').innerText);alert('Copied!');}
-function signUp(){const e=email.value.trim(),p=password.value;if(!e||!p)return showErr('Fill email & password');if(p.length<6)return showErr('Password min 6');auth.createUserWithEmailAndPassword(e,p).catch(err=>showErr(err.message));}
-function logIn(){const e=email.value.trim(),p=password.value;if(!e||!p)return showErr('Fill email & password');auth.signInWithEmailAndPassword(e,p).catch(err=>showErr(err.message));}
-function forgotPass(){if(!email.value)return showErr('Enter email first');auth.sendPasswordResetEmail(email.value).then(()=>alert('Reset sent')).catch(err=>showErr(err.message));}
-function logOut(){auth.signOut().then(()=>location.reload());}
-let watching=false;function startAd(){if(watching)return;watching=true;let t=15;const btn=claimBtn,prog=progressBar,txt=timerText,box=realAdContainer;btn.disabled=true;let i=setInterval(()=>{t--;txt.innerText='Watching... '+t+'s';btn.innerText='WAIT '+t+'s...';prog.style.width=((15-t)/15*100)+'%';box.innerHTML=`<p class="text-3xl animate-pulse">▶️</p><p class="text-xs mt-2">${t}s</p>`;if(t<=0){clearInterval(i);watching=false;txt.innerText='✅ Ad Completed! Claim now';prog.style.width='100%';btn.disabled=false;btn.innerText='CLAIM 50 PTS ✅';btn.className='w-full bg-green-500 py-4 rounded-2xl font-black mt-4 animate-pulse';btn.onclick=claimPoints;box.innerHTML=`<p class="text-2xl">✅</p><p class="text-sm text-green-400">Click CLAIM</p>`;}},1000);}
-async function claimPoints(){await db.collection('users').doc(auth.currentUser.uid).update({points:firebase.firestore.FieldValue.increment(50),adsWatched:firebase.firestore.FieldValue.increment(1)});currentUserData.points+=50;pts.innerText=currentUserData.points+' PTS';walletPts.innerText=currentUserData.points+' PTS';adCount.innerText=(currentUserData.adsWatched||0)+1+' / 30';claimBtn.innerText='WATCH AD (15s) - 50 PTS';claimBtn.className='w-full bg-blue-600 py-4 rounded-2xl font-black mt-4';claimBtn.onclick=startAd;timerText.innerText='Ready';progressBar.style.width='0%';realAdContainer.innerHTML='<p class="text-3xl">▶️</p><p class="text-xs text-white/30 mt-2">+50 PTS added!</p>';}
-</script>
-</body></html>
+function renderGrid(count){let g=document.getElementById('adGrid');g.innerHTML='';for(let i=0;i<30;i++){let d=document.createElement('div');d.className='ad-dot'+(i<count?' filled':'');g.appendChild(d);}}
+renderGrid(0);
+function showPage(p){['homePage','tasksPage','walletPage'].forEach(id=>document.getElementById(id).classList.add('hidden'));['navHome','navTasks','navWallet'].forEach(id=>{document.getElementById(id).classList.remove('nav-active');document.getElementById(id).classList.add('text-white/30');});document.getElementById(p+'Page').classList.remove('hidden');document.getElementById('nav'+p.charAt(0).toUpperCase()+p.slice(1)).classList.add('nav-active');document.getElementById('nav'+p.charAt(0).toUpperCase()+p.slice(1)).classList.remove('text-white/30');}
+function toggleMode(){isLogin=!isLogin;mainBtn.innerText=isLogin?'LOG IN':'SIGN UP & START EARNING';

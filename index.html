@@ -1,88 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-<title>Blunboz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Blunboz - Earn USDT</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 <style>
-:root{--bg:#0a1931;--card:#13284d;--accent:#7b5cf6;--blue:#3b82f6;--green:#00e676}
-body{margin:0;background:var(--bg);color:#fff;font-family:Inter,sans-serif;padding-bottom:80px}
-.header{padding:16px;display:flex;align-items:center;gap:12px}
-.logo{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#a78bfa,#3b82f6);display:grid;place-items:center;font-weight:900}
-.balance{background:var(--card);margin:12px;border-radius:20px;padding:18px;text-align:center;border:1px solid #ffffff10}
-.balance h1{font-size:32px;margin:6px 0}
-.btn{width:100%;padding:14px;border-radius:14px;border:0;font-weight:700;color:#fff;background:linear-gradient(90deg,var(--accent),var(--blue));margin-top:10px}
-.task{background:var(--card);margin:10px 12px;padding:14px;border-radius:14px;display:flex;justify-content:space-between;align-items:center}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#0f2447;display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid #ffffff15}
-.nav div{text-align:center;font-size:11px;opacity:.6} .nav .active{opacity:1;color:var(--accent)}
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+  body{background:#07070a;color:#fff;min-height:100vh;padding-bottom:90px;overflow-x:hidden}
+ .bg-glow{position:fixed;top:-150px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle, rgba(120,80,255,0.25) 0%, transparent 70%);pointer-events:none}
+ .header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;position:relative;z-index:2}
+ .profile{display:flex;align-items:center;gap:10px}
+ .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#4f46e5);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
+ .user-info span{font-size:12px;color:#9ca3af}.user-info h4{font-size:14px;font-weight:600}
+ .level-badge{background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700;color:#a78bfa}
+
+ .balance-card{margin:10px 20px 20px;background:linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);border:1px solid rgba(255,255,255,0.1);border-radius:24px;padding:22px;position:relative;z-index:2;backdrop-filter:blur(20px)}
+ .balance-label{font-size:11px;letter-spacing:1.5px;color:#9ca3af;text-transform:uppercase;font-weight:600}
+ .balance-row{display:flex;align-items:baseline;gap:8px;margin-top:8px}
+ .balance-amount{font-size:36px;font-weight:800;letter-spacing:-1px}
+ .balance-curr{font-size:14px;color:#a78bfa;font-weight:600;background:rgba(124,58,237,0.2);padding:4px 8px;border-radius:8px}
+ .balance-sub{font-size:12px;color:#6b7280;margin-top:6px}
+
+ .main-btn{margin:0 20px;width:calc(100% - 40px);background:linear-gradient(135deg,#7c3aed 0%,#4f46e5 100%);border:none;padding:16px;border-radius:16px;color:#fff;font-weight:700;font-size:16px;cursor:pointer;box-shadow:0 10px 30px rgba(124,58,237,0.4);display:flex;align-items:center;justify-content:center;gap:8px;transition:0.2s}
+ .main-btn:active{transform:scale(0.97)}
+ .sec-btn{margin:12px 20px 0;width:calc(100% - 40px);background:transparent;border:1px solid rgba(255,255,255,0.12);padding:14px;border-radius:16px;color:#e5e7eb;font-weight:600;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+
+ .stats{margin:22px 20px 0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+ .stat-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:18px;padding:16px}
+ .stat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+ .stat-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+ .icon-purple{background:rgba(124,58,237,0.15)}.icon-green{background:rgba(16,185,129,0.15)}
+ .stat-value{font-size:20px;font-weight:700}.stat-label{font-size:11px;color:#9ca3af;margin-top:2px}
+ .progress{height:6px;background:rgba(255,255,255,0.08);border-radius:10px;margin-top:12px;overflow:hidden}
+ .progress-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#4f46e5);border-radius:10px;transition:0.5s}
+
+ .nav{position:fixed;bottom:0;left:0;right:0;background:rgba(15,15,20,0.9);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-around;padding:10px 0 20px;z-index:10}
+ .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;color:#6b7280;font-size:10px;font-weight:600;cursor:pointer}
+ .nav-item.active{color:#fff}.nav-item.active.nav-ico{background:rgba(124,58,237,0.2);color:#a78bfa}
+ .nav-ico{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:16px}
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">B</div><div><b id="uname">Loading...</b><br><small style="opacity:.6">Blunboz Earn</small></div></div>
+<div class="bg-glow"></div>
 
-<div class="balance">
-<small>BALANCE</small>
-<h1><span id="bal">0.00</span> <small style="font-size:14px">USDT</small></h1>
-<button class="btn" onclick="watchAd()">🎬 Watch Ad +0.001 USDT</button>
-<button class="btn" style="background:#1a3a6b" onclick="showWithdraw()">Withdraw</button>
+<div class="header">
+  <div class="profile">
+    <div class="avatar" id="avatar">B</div>
+    <div class="user-info"><span id="username">Welcome</span><h4>Blunboz Earner</h4></div>
+  </div>
+  <div class="level-badge">LVL 1 • Novice</div>
 </div>
 
-<div id="tasks">
-<div class="task"><span>📺 Daily Ads (0/20)</span><b id="adCount">0</b></div>
-<div class="task"><span>👥 Referrals</span><b id="refCount">0</b></div>
+<div class="balance-card">
+  <div class="balance-label">Total Earnings</div>
+  <div class="balance-row">
+    <div class="balance-amount" id="balance">0.000</div>
+    <div class="balance-curr">USDT</div>
+  </div>
+  <div class="balance-sub">~ $0.00 • Withdraw min 1.00 USDT</div>
+</div>
+
+<button class="main-btn" id="watchBtn">▶ Watch Ad +0.001 USDT</button>
+<button class="sec-btn" id="withdrawBtn">💸 Withdraw Earnings</button>
+
+<div class="stats">
+  <div class="stat-card">
+    <div class="stat-top"><div class="stat-icon icon-purple">📺</div><span style="font-size:11px;color:#6b7280" id="adsCount">0/20</span></div>
+    <div class="stat-value" id="adsToday">0</div>
+    <div class="stat-label">Ads Today</div>
+    <div class="progress"><div class="progress-fill" id="adsBar" style="width:0%"></div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-top"><div class="stat-icon icon-green">👥</div><span style="font-size:11px;color:#10b981">+0%</span></div>
+    <div class="stat-value" id="refCount">0</div>
+    <div class="stat-label">Referrals</div>
+    <div class="progress"><div class="progress-fill" style="width:20%;background:linear-gradient(90deg,#10b981,#059669)"></div></div>
+  </div>
 </div>
 
 <div class="nav">
-<div class="active" onclick="location.reload()">🏠<br>Home</div>
-<div onclick="watchAd()">🎬<br>Tasks</div>
-<div onclick="showWithdraw()">💼<br>Wallet</div>
-<div onclick="share()">👥<br>Refer</div>
+  <div class="nav-item active"><div class="nav-ico">🏠</div>Home</div>
+  <div class="nav-item"><div class="nav-ico">📋</div>Tasks</div>
+  <div class="nav-item"><div class="nav-ico">💼</div>Wallet</div>
+  <div class="nav-item"><div class="nav-ico">👥</div>Friends</div>
 </div>
 
 <script>
-const tg = window.Telegram.WebApp; tg.expand(); tg.ready();
-const user = tg.initDataUnsafe?.user || {id:12345, first_name:"Test User", username:"test"};
-document.getElementById('uname').innerText = user.first_name + (user.username ? ' @'+user.username : '');
-
-// SIMPLE LOCAL STORAGE FOR NOW - you can connect to backend later
-let bal = parseFloat(localStorage.getItem('blunboz_bal')||'0');
-let ads = parseInt(localStorage.getItem('blunboz_ads')||'0');
-document.getElementById('bal').innerText = bal.toFixed(3);
-document.getElementById('adCount').innerText = ads;
-
-// Adsgram
-const AdController = window.Adsgram?.init({ blockId: "17742" });
-
-async function watchAd(){
- if(ads>=20){ alert("Daily limit reached (20/day)"); return; }
- try{
-   if(AdController){ await AdController.show(); }
-   bal+=0.001; ads++;
-   localStorage.setItem('blunboz_bal', bal);
-   localStorage.setItem('blunboz_ads', ads);
-   document.getElementById('bal').innerText = bal.toFixed(3);
-   document.getElementById('adCount').innerText = ads;
-   tg.HapticFeedback.notificationOccurred('success');
- }catch(e){ alert("Ad not ready, try again"); }
-}
-
-function share(){
- const link = `https://t.me/BlunbozearnusdtBot/blunboz?startapp=${user.id}`;
- const text = `Join Blunboz and earn USDT! ${link}`;
- if(navigator.share){ navigator.share({text}); } else { prompt("Copy your referral link:", link); }
-}
-
-function showWithdraw(){
- if(bal<1){ alert("Minimum 1 USDT to withdraw. Keep watching ads!"); return; }
- let addr = prompt("Enter your USDT (TRC20) address:");
- if(addr){ alert("Withdrawal request for "+bal.toFixed(3)+" USDT to "+addr+" submitted! (Demo mode)"); }
-}
-
-// Handle referral code from startapp
-const startParam = new URLSearchParams(location.search).get('startapp') || tg.initDataUnsafe?.start_param;
-if(startParam){ console.log("Referred by:", startParam); }
+  let tg = window.Telegram?.WebApp; if(tg){tg.expand(); document.getElementById('username').innerText = tg.initDataUnsafe?.user?.first_name || 'Welcome'; document.getElementById('avatar').innerText = (tg.initDataUnsafe?.user?.first_name||'B')[0];}
+  let bal = parseFloat(localStorage.getItem('blunboz_bal')||'0'); let ads = parseInt(localStorage.getItem('blunboz_ads')||'0');
+  function render(){document.getElementById('balance').innerText = bal.toFixed(3); document.getElementById('adsToday').innerText = ads; document.getElementById('adsCount').innerText = ads+'/20'; document.getElementById('adsBar').style.width = (ads/20*100)+'%'; localStorage.setItem('blunboz_bal',bal); localStorage.setItem('blunboz_ads',ads);}
+  render();
+  document.getElementById('watchBtn').onclick = function(){
+    if(ads>=20){alert('Daily limit reached! Come back tomorrow'); return;}
+    this.innerText='⏳ Watching...'; this.disabled=true;
+    setTimeout(()=>{bal+=0.001; ads++; render(); this.innerText='▶ Watch Ad +0.001 USDT'; this.disabled=false; if(tg) tg.HapticFeedback.notificationOccurred('success');}, 2500);
+  };
+  document.getElementById('withdrawBtn').onclick = ()=>{if(bal<1){alert('Min withdraw is 1.00 USDT. Keep watching!');}else{alert('Withdraw request: '+bal.toFixed(3)+' USDT - coming soon!');}};
 </script>
 </body>
-  </html>
+ </html>

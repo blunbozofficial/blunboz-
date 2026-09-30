@@ -63,7 +63,7 @@ var REWARD = 0.02; var AD_REWARD = 0.10; var CHANNEL_REWARD = 0.40;
 function render(){ document.getElementById('bal').innerText = bal.toFixed(2); document.getElementById('bal2').innerText = bal.toFixed(2); document.getElementById('ads').innerText = ads; localStorage.setItem('b_bal', bal); localStorage.setItem('b_ads', ads); var link = 'https://t.me/BlunbozearnusdtBot?start=' + (tg && tg.initDataUnsafe && tg.initDataUnsafe.user? tg.initDataUnsafe.user.id : '123'); document.getElementById('refLink').innerText = link; document.getElementById('streakInfo').innerText = 'Streak: ' + streak + ' days'; renderCheckGrid(); }
 function renderCheckGrid(){ var grid = document.getElementById('checkGrid'); grid.innerHTML = ''; for(var i=0;i<7;i++){ var d = document.createElement('div'); d.className = 'check-day' + (i<streak? ' done' : '') + (i===streak? ' active' : ''); d.innerHTML = 'Day ' + (i+1) + '<br><b>+Bonus</b>'; grid.appendChild(d);} var today = new Date().toDateString(); if(lastCheck === today){ document.getElementById('checkBtn').innerText = 'Checked Today'; document.getElementById('checkBtn').disabled = true; } }
 render();
-var AdController = window.Adsgram.init({ blockId: "101" });
+var AdController = window.Adsgram.init({ blockId: "51118" });
 document.getElementById('watchBtn').onclick = function(){
   if(ads>=20){ alert('Daily limit reached'); return; }
   var btn = document.getElementById('watchBtn');

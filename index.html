@@ -1,66 +1,123 @@
 <!DOCTYPE html>
 <html><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Blunboz</title>
+<title>Blunboz - 40 Days Airdrop</title>
 <script src='//libtl.com/sdk.js' data-zone='11933586' data-sdk='show_11933586'></script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-body{margin:0;background:#0a0a0a;color:#fff;font-family:Arial;padding-bottom:70px}
-.header{text-align:center;padding:20px}
-#bal{font-size:36px;color:#00ff88;font-weight:bold}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;display:flex;justify-content:around;padding:10px 0}
-.nav button{background:none;border:none;color:#888;padding:10px;font-size:14px}
-.nav button.active{color:#00ff88}
-.page{display:none;padding:20px}.page.active{display:block}
-.card{background:#1e1e1e;padding:20px;border-radius:16px;margin:15px 0;text-align:center}
-.btn{background:#00ff88;color:#000;border:none;padding:14px 28px;border-radius:12px;font-weight:bold;width:100%;font-size:16px}
+body{margin:0;background:#0a0a0a;color:#fff;font-family:Arial;padding-bottom:75px}
+.header{text-align:center;padding:18px;background:#111}
+#bal{font-size:38px;color:#00ff88;font-weight:bold;margin:6px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;display:flex;border-top:1px solid #222}
+.nav button{flex:1;background:none;border:none;color:#777;padding:12px 2px;font-size:13px}
+.nav button.active{color:#00ff88;font-weight:bold}
+.page{display:none;padding:16px}.page.active{display:block}
+.card{background:#1e1e1e;padding:18px;border-radius:16px;margin:12px 0;text-align:center}
+.btn{background:#00ff88;color:#000;border:none;padding:14px;border-radius:12px;font-weight:bold;width:100%;font-size:16px;cursor:pointer}
+.btn:disabled{background:#333;color:#777}
+.lock{background:#2a1a00;color:#ffb700;padding:10px;border-radius:10px;margin:10px 0;font-size:14px}
 </style>
 </head><body>
+
 <div class="header">
-<div>💰 <b>Blunboz</b></div>
-<div id="bal">$0.0110</div>
-<div style="opacity:.7">30 ads / day</div>
+<div>💰 <b>BLUNBOZ</b> — 40 Days Airdrop</div>
+<div id="bal">0 POINTS</div>
+<div id="dayinfo" style="opacity:.8;font-size:13px">Day 1/40</div>
+<div style="margin-top:8px;background:#222;border-radius:20px;height:8px;overflow:hidden"><div id="bar" style="width:2%;height:100%;background:#00ff88"></div></div>
 </div>
 
 <div id="home" class="page active">
 <div class="card">
-<button class="btn" onclick="watchAd()">▶️ Watch Ad & Earn $0.0100</button>
-<p id="status">✅ +$0.01 Earned! Watch again</p>
-<p>Ads today: <span id="count">1</span>/30</p>
+<p>Watch ads, earn points. Convert to USDT after 40 days.</p>
+<button class="btn" onclick="watchAd()">▶️ Watch Ad & Earn 10 Points</button>
+<p id="status">Ready to earn</p>
+<p>Ads today: <span id="count">0</span>/30</p>
 </div>
+<div class="card" style="text-align:left"><b>How it works:</b><br>• 1 ad = 10 points<br>• 30 ads/day max<br>• Withdraw unlocked after 40 days<br>• Points → USDT at end</div>
 </div>
 
 <div id="tasks" class="page">
-<div class="card"><h3>📋 Tasks</h3><p>Join @BlunbozChannel — Earn $0.05</p><button class="btn">Do Task</button></div>
+<div class="card">
+<h3>📋 Tasks — Earn More Points</h3>
+<div style="background:#111;padding:12px;border-radius:10px;margin:10px 0;text-align:left">
+<p>🔹 Join Channel +50 Points</p>
+<button class="btn" onclick="doTask('join1','https://t.me/BlunbozChannel')">Join @BlunbozChannel</button>
+</div>
+<div style="background:#111;padding:12px;border-radius:10px;margin:10px 0;text-align:left">
+<p>🔹 Join Chat +50 Points</p>
+<button class="btn" onclick="doTask('join2','https://t.me/BlunbozChannel')">Join Chat Group</button>
+</div>
+<div style="background:#111;padding:12px;border-radius:10px;margin:10px 0;text-align:left">
+<p>🔹 Follow X (Twitter) +50 Points</p>
+<button class="btn" onclick="doTask('follow','https://t.me/BlunbozChannel')">Follow & Earn</button>
+</div>
+</div>
 </div>
 
 <div id="refer" class="page">
-<div class="card"><h3>👥 Refer & Earn</h3><p>Get 10% of friends earnings</p><p id="reflink" style="word-break:break-all;font-size:12px">https://t.me/BlunbozearnusdtBot/blunboz</p><button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('reflink').innerText)">Copy Link</button></div>
+<div class="card">
+<h3>👥 Refer & Earn</h3>
+<p>Get 10% of friends points forever!</p>
+<p id="reflink" style="background:#000;padding:10px;border-radius:8px;font-size:11px;word-break:break-all">https://t.me/BlunbozearnusdtBot/blunboz?start=YOURID</p>
+<button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('reflink').innerText);alert('Copied!')">Copy Refer Link</button>
+<p style="font-size:13px;margin-top:10px">Referrals: <span id="refs">0</span></p>
+</div>
 </div>
 
 <div id="wallet" class="page">
-<div class="card"><h3>💳 Wallet</h3><p>Balance: <span class="baltxt"></span></p><p>Min withdraw $1.00 USDT</p><button class="btn">Withdraw</button></div>
+<div class="card">
+<h3>💳 Wallet</h3>
+<h2 id="bal2">0 POINTS</h2>
+<div class="lock" id="lockmsg">🔒 Withdraw Locked — Airdrop ends in 39 days</div>
+<button class="btn" id="withBtn" disabled>Withdraw Locked (40 Days)</button>
+<p style="font-size:12px;opacity:.6;margin-top:10px">Points will convert to USDT automatically after airdrop. Rate hidden until end.</p>
+</div>
 </div>
 
 <div class="nav">
-<button onclick="openTab('home')" id="b-home" class="active">🏠 Home</button>
-<button onclick="openTab('tasks')" id="b-tasks">📋 Tasks</button>
-<button onclick="openTab('refer')" id="b-refer">👥 Refer</button>
-<button onclick="openTab('wallet')" id="b-wallet">💳 Wallet</button>
+<button onclick="openTab('home')" id="b-home" class="active">🏠<br>Home</button>
+<button onclick="openTab('tasks')" id="b-tasks">📋<br>Tasks</button>
+<button onclick="openTab('refer')" id="b-refer">👥<br>Refer</button>
+<button onclick="openTab('wallet')" id="b-wallet">💳<br>Wallet</button>
 </div>
 
 <script>
-let balance=parseFloat(localStorage.getItem('blunboz_bal')||'0.011');
-let count=parseInt(localStorage.getItem('blunboz_count')||'1');
-function updateUI(){ document.getElementById('bal').innerText='$'+balance.toFixed(4); document.getElementById('count').innerText=count; document.querySelectorAll('.baltxt').forEach(e=>e.innerText='$'+balance.toFixed(4)); }
+const START_KEY='blun_start';
+let start = localStorage.getItem(START_KEY);
+if(!start){ start=Date.now(); localStorage.setItem(START_KEY,start); }
+let balance=parseInt(localStorage.getItem('blun_pts')||'0');
+let count=parseInt(localStorage.getItem('blun_cnt')||'0');
+let lastDay=localStorage.getItem('blun_day')||new Date().toDateString();
+if(lastDay!==new Date().toDateString()){ count=0; localStorage.setItem('blun_day',new Date().toDateString()); }
+let doneTasks=JSON.parse(localStorage.getItem('blun_tasks')||'{}');
+
+function getDayNum(){ let diff=Date.now()-parseInt(start); return Math.min(40, Math.floor(diff/(1000*60*60*24))+1); }
+function updateUI(){
+ document.getElementById('bal').innerText=balance+' POINTS';
+ document.getElementById('bal2').innerText=balance+' POINTS';
+ document.getElementById('count').innerText=count;
+ let d=getDayNum(); document.getElementById('dayinfo').innerText='Day '+d+'/40 — '+(40-d)+' days left to withdraw';
+ document.getElementById('bar').style.width=(d/40*100)+'%';
+ let locked = d<40; document.getElementById('lockmsg').innerText = locked ? '🔒 Withdraw Locked — Airdrop ends in '+(40-d)+' days' : '✅ Withdraw Unlocked!';
+ document.getElementById('withBtn').disabled=locked; document.getElementById('withBtn').innerText=locked?'Withdraw Locked ('+(40-d)+' days left)':'Withdraw Now';
+}
 updateUI();
 function openTab(t){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(t).classList.add('active'); document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active')); document.getElementById('b-'+t).classList.add('active'); }
 function watchAd(){
- if(count>=30){alert('Limit reached');return;}
+ if(count>=30){ alert('Daily limit 30/30 reached!'); return; }
  document.getElementById('status').innerText='Loading ad...';
  if(typeof show_11933586==='function'){
-  show_11933586().then(()=>{ balance+=0.01; count++; localStorage.setItem('blunboz_bal',balance); localStorage.setItem('blunboz_count',count); updateUI(); document.getElementById('status').innerText='✅ +$0.01 Earned! Watch again'; });
- } else { document.getElementById('status').innerText='Ad not ready, retry'; }
+  show_11933586().then(()=>{
+   balance+=10; count++; localStorage.setItem('blun_pts',balance); localStorage.setItem('blun_cnt',count); updateUI(); document.getElementById('status').innerText='✅ +10 Points Earned!'; if(window.Telegram) Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+  }).catch(()=>{ document.getElementById('status').innerText='Ad closed early'; });
+ } else { document.getElementById('status').innerText='Ad not ready, retry in 3 sec'; }
 }
+function doTask(id,link){
+ window.open(link,'_blank');
+ if(!doneTasks[id]){ setTimeout(()=>{ doneTasks[id]=true; localStorage.setItem('blun_tasks',JSON.stringify(doneTasks)); balance+=50; localStorage.setItem('blun_pts',balance); updateUI(); alert('+50 Points earned!'); },3000); }
+ else { alert('Task already done'); }
+}
+// Telegram user id for ref link
+if(window.Telegram && Telegram.WebApp.initDataUnsafe.user){ let uid=Telegram.WebApp.initDataUnsafe.user.id; document.getElementById('reflink').innerText='https://t.me/BlunbozearnusdtBot/blunboz?start='+uid; }
 </script>
 </body></html>

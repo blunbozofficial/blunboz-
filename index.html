@@ -1,44 +1,90 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html><html><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BLUNBOZ</title>
-<script src='//libtl.com/sdk.js' data-zone='11933586' data-sdk='show_11933586'></script>
+<script src="//libtl.com/sdk.js" data-zone="11933586" data-sdk="show_11933586"></script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#0a1628;color:#fff;font-family:Arial;padding-bottom:85px;min-height:100vh}
-.header{background:linear-gradient(135deg,#0a4da1,#0088ff);padding:22px;text-align:center;border-radius:0 0 24px 24px}
-#bal{font-size:44px;font-weight:bold;margin:8px 0}
-.progress{height:10px;background:rgba(0,0,0,0.4);border-radius:20px;margin-top:10px;overflow:hidden}
-#bar{height:100%;width:5%;background:#fff}
-.page{display:none;padding:16px}.page.active{display:block}
-.card{background:#132a4d;border:1px solid #1d3c6e;border-radius:18px;padding:20px;margin:12px 0;text-align:center}
-.btn{background:linear-gradient(135deg,#0088ff,#00aaff);color:#fff;border:none;padding:14px;border-radius:14px;font-weight:bold;width:100%;font-size:16px}
-.btn:disabled{background:#1a2f4d;color:#6a8ab0}
-.checkin{background:linear-gradient(135deg,#0088ff,#00ccff);padding:18px;border-radius:18px;margin:12px 0;text-align:center;font-weight:bold}
-.task{background:#112240;border:1px solid #1d3c6e;padding:16px;border-radius:14px;margin:12px 0;display:flex;justify-content:space-between;align-items:center}
-.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:75px;background:#0b1f3d;display:flex;z-index:99999;border-top:2px solid #1e4f8a}
-.bottom-nav button{flex:1;background:none;border:none;color:#7fb0e0;font-size:13px;font-weight:bold}
-.bottom-nav button.active{color:#00aaff;background:#12305f}
-.lock{border:1px dashed #2a5a9a;padding:12px;border-radius:12px;color:#8ab4ff;margin:10px 0}
-</style>
-</head>
-<body>
+body{margin:0;background:#0a1628;color:#fff;font-family:Arial;padding-bottom:80px}
+.header{background:linear-gradient(135deg,#0a4da1,#0088ff);text-align:center;padding:20px;border-radius:0 0 20px 20px}
+#bal{font-size:40px;font-weight:bold}
+.bar{height:8px;background:rgba(0,0,0,.4);border-radius:10px;margin-top:8px}
+#bar{height:8px;background:#fff;border-radius:10px;width:5%}
+.page{display:none;padding:14px}.page.active{display:block}
+.card{background:#132a4d;border:1px solid #1d3c6e;border-radius:16px;padding:16px;margin:10px 0;text-align:center}
+.btn{background:#0088ff;color:#fff;border:0;padding:14px;border-radius:12px;font-weight:bold;width:100%;font-size:16px}
+.task{background:#112240;border:1px solid #1d3c6e;border-radius:12px;padding:12px;margin:10px 0;display:flex;justify-content:space-between;align-items:center}
+.nav{position:fixed;bottom:0;left:0;right:0;height:70px;background:#0b1f3d;display:flex;z-index:9999;border-top:2px solid #1e4f8a}
+.nav button{flex:1;background:none;border:0;color:#7fb0e0;font-size:12px;font-weight:bold}
+.nav button.active{color:#00aaff;background:#122f5e}
+</style></head><body>
+
 <div class="header">
-<div style="font-weight:bold;letter-spacing:2px">💎 BLUNBOZ</div>
-<div style="font-size:12px;opacity:0.8">40 DAYS AIRDROP</div>
+<b>💎 BLUNBOZ</b><br><small>40 DAYS AIRDROP</small>
 <div id="bal">0 POINTS</div>
-<div id="dayinfo" style="font-size:13px">Day 1/40 - 39 days left</div>
-<div class="progress"><div id="bar"></div></div>
+<div id="day">Day 1/40 - 39 days left</div>
+<div class="bar"><div id="bar"></div></div>
 </div>
+
 <div id="home" class="page active">
-<div class="checkin" id="checkBox" onclick="dailyCheck()">
-<div>📅 Daily Check-in</div>
-<div id="checktxt" style="font-weight:normal;font-size:13px">Tap to claim +20 Points</div>
-<div id="streak" style="font-size:12px">🔥 Streak: 0 days</div>
+<div class="card" style="background:linear-gradient(135deg,#0088ff,#00ccff);color:#fff" onclick="dailyCheck()" id="check">
+<b>📅 Daily Check-in</b><br><span id="ctxt">Tap to claim +20 Points</span><br><small id="stk">🔥 Streak: 0 days</small>
 </div>
 <div class="card">
-<p style="margin-bottom:12px">Watch ads, earn points. Convert to USDT after 40 days</p>
-<button class="btn" onclick
+<p>Watch ads, earn points. Convert to USDT after 40 days</p><br>
+<button class="btn" onclick="watchAd()">▶️ Watch Ad & Earn 20 Points</button>
+<p id="st" style="margin:10px;color:#8abfff">Ready to earn</p>
+<p>Ads today: <b id="cnt">0</b>/25</p>
+</div>
+</div>
+
+<div id="tasks" class="page">
+<h3>📋 Tasks</h3>
+<div class="task" id="tjoin">
+<div><b>Join Channel</b><br><small>@blunbozearn</small><br><small style="color:#0f0">+50 Points</small></div>
+<button class="btn" style="width:100px" id="jb" onclick="join()">Join</button>
+</div>
+</div>
+
+<div id="refer" class="page">
+<div class="card">
+<h3>👥 Refer & Earn</h3>
+<p id="refl" style="background:#070f20;padding:8px;border-radius:8px;font-size:11px;word-break:break-all">https://t.me/BlunbozearnusdtBot/blunboz</p><br>
+<button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('refl').innerText);alert('Copied')">Copy Link</button>
+</div>
+</div>
+
+<div id="wallet" class="page">
+<div class="card">
+<h3>💳 Wallet</h3>
+<h2 id="bal2" style="font-size:32px;color:#00aaff">0 POINTS</h2>
+<div id="lock" style="border:1px dashed #2a5a9a;padding:10px;border-radius:10px;color:#8ab4ff;margin:10px 0">🔒 Locked - 39 days left</div>
+<button class="btn" id="wb" disabled>🔒 Locked</button>
+</div>
+</div>
+
+<div class="nav">
+<button id="b-home" class="active" onclick="tab('home')">🏠<br>Home</button>
+<button id="b-tasks" onclick="tab('tasks')">📋<br>Tasks</button>
+<button id="b-refer" onclick="tab('refer')">👥<br>Refer</button>
+<button id="b-wallet" onclick="tab('wallet')">💳<br>Wallet</button>
+</div>
+
+<script>
+try{Telegram.WebApp.ready();Telegram.WebApp.expand()}catch(e){}
+var BAL=parseInt(localStorage.getItem('pts')||0),CNT=parseInt(localStorage.getItem('cnt')||0),DONE=JSON.parse(localStorage.getItem('done')||'{}'),CHK=localStorage.getItem('chk')||'',STR=parseInt(localStorage.getItem('str')||0),START=localStorage.getItem('stt');if(!START){START=Date.now();localStorage.setItem('stt',START)}
+var TODAY=new Date().toDateString();if((localStorage.getItem('day')||'')!==TODAY){CNT=0;localStorage.setItem('day',TODAY)}
+function day(){return Math.min(40,Math.floor((Date.now()-parseInt(START))/86400000)+1)}
+function ui(){
+document.getElementById('bal').innerText=BAL+' POINTS';document.getElementById('bal2').innerText=BAL+' POINTS';document.getElementById('cnt').innerText=CNT;
+var d=day();document.getElementById('day').innerText='Day '+d+'/40 - '+(40-d)+' days left';document.getElementById('bar').style.width=(d/40*100)+'%';
+document.getElementById('stk').innerText='🔥 Streak: '+STR+' days';
+document.getElementById('lock').innerText=d<40?'🔒 Locked - '+(40-d)+' days left':'✅ Unlocked';document.getElementById('wb').innerText=d<40?'🔒 Locked ('+(40-d)+'d)':'Withdraw';document.getElementById('wb').disabled=d<40;
+if(DONE.join){document.getElementById('tjoin').style.opacity='.5';document.getElementById('jb').innerText='Done ✓';document.getElementById('jb').disabled=true}
+if(CHK===TODAY)document.getElementById('ctxt').innerText='✅ Claimed today';
+}ui();
+function tab(t){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(t).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));document.getElementById('b-'+t).classList.add('active')}
+function watchAd(){if(CNT>=25){alert('Limit 25/25');return}document.getElementById('st').innerText='Loading ad...';if(typeof show_11933586==='function'){show_11933586().then(()=>{BAL+=20;CNT++;localStorage.setItem('pts',BAL);localStorage.setItem('cnt',CNT);ui();document.getElementById('st').innerText='✅ +20 Points!'}).catch(()=>{document.getElementById('st').innerText='Closed early'})}else{document.getElementById('st').innerText='Ad not ready, retry'}}
+function join(){try{Telegram.WebApp.openTelegramLink('https://t.me/blunbozearn')}catch(e){window.open('https://t.me/blunbozearn','_blank')}if(DONE.join)return;setTimeout(()=>{var b=document.getElementById('jb');b.innerText='Verify ✅';b.onclick=()=>{DONE.join=true;localStorage.setItem('done',JSON.stringify(DONE));BAL+=50;localStorage.setItem('pts',BAL);ui();alert('✅ +50 Points for @blunbozearn');b.innerText='Done ✓';b.disabled=true}},800)}
+function dailyCheck(){if(CHK===TODAY){alert('Already claimed');return}CHK=TODAY;localStorage.setItem('chk',TODAY);STR++;localStorage.setItem('str',STR);BAL+=20;localStorage.setItem('pts',BAL);ui();alert('✅ +20 Points!')}
+try{if(Telegram.WebApp.initDataUnsafe.user){document.getElementById('refl').innerText='https://t.me/BlunbozearnusdtBot/blunboz?start='+Telegram.WebApp.initDataUnsafe.user.id}}catch(e){}
+</script></body></html>

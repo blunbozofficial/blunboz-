@@ -7,29 +7,27 @@
 <style>
 body{margin:0;background:#0a1628;color:#fff;font-family:Arial;padding-bottom:80px}
 .header{text-align:center;padding:20px;background:linear-gradient(135deg,#0a4da1,#0088ff);border-radius:0 0 24px 24px;box-shadow:0 4px 20px rgba(0,136,255,.4)}
-#bal{font-size:42px;font-weight:bold;margin:8px;text-shadow:0 2px 10px rgba(0,0,0,.3)}
-#dayinfo{opacity:.9;font-size:14px}
+#bal{font-size:42px;font-weight:bold;margin:8px}
 .progress{margin-top:10px;background:rgba(0,0,0,.3);border-radius:20px;height:10px;overflow:hidden}
 #bar{height:100%;background:#fff;width:2%;transition:.5s}
 .nav{position:fixed;bottom:0;left:0;right:0;background:#0e203a;display:flex;border-top:1px solid #1a3a6a}
 .nav button{flex:1;background:none;border:none;color:#6a9ed0;padding:14px 2px;font-size:13px}
 .nav button.active{color:#0088ff;font-weight:bold;background:#122c52}
 .page{display:none;padding:16px}.page.active{display:block}
-.card{background:#132a4d;padding:20px;border-radius:18px;margin:12px 0;text-align:center;border:1px solid #1d3c6e;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.card{background:#132a4d;padding:20px;border-radius:18px;margin:12px 0;text-align:center;border:1px solid #1d3c6e}
 .btn{background:linear-gradient(135deg,#0088ff,#00aaff);color:#fff;border:none;padding:14px;border-radius:14px;font-weight:bold;width:100%;font-size:16px;cursor:pointer;box-shadow:0 4px 15px rgba(0,136,255,.4)}
 .btn:disabled{background:#1a2f4d;color:#5a7aaa;box-shadow:none}
-.lock{background:#1a2e0a;background:linear-gradient(135deg,#1a3a5a,#0f2744);border:1px dashed #2a5a9a;padding:12px;border-radius:12px;margin:12px 0;font-size:14px;color:#8ab4ff}
+.lock{background:linear-gradient(135deg,#1a3a5a,#0f2744);border:1px dashed #2a5a9a;padding:12px;border-radius:12px;margin:12px 0;font-size:14px;color:#8ab4ff}
 .checkin{background:linear-gradient(135deg,#0088ff,#00ccff);color:#fff;padding:18px;border-radius:18px;margin:12px 0;text-align:center;font-weight:bold;cursor:pointer;animation:shake 2s infinite;box-shadow:0 6px 20px rgba(0,136,255,.5)}
 @keyframes shake{0%,100%{transform:rotate(0)}10%{transform:rotate(-1deg)}20%{transform:rotate(1deg)}30%{transform:rotate(0)}}
 .task{background:#112240;padding:16px;border-radius:14px;margin:12px 0;display:flex;justify-content:space-between;align-items:center;border:1px solid #1d3c6e}
 .task.done{opacity:.5}
-.task b{color:#8abfff}
 </style>
 </head><body>
 
 <div class="header">
 <div style="letter-spacing:2px;font-weight:bold">💎 BLUNBOZ</div>
-<div style="font-size:12px;opacity:.8;margin-top:2px">40 DAYS AIRDROP</div>
+<div style="font-size:12px;opacity:.8">40 DAYS AIRDROP</div>
 <div id="bal">0 POINTS</div>
 <div id="dayinfo">Day 1/40 — 39 days left</div>
 <div class="progress"><div id="bar"></div></div>
@@ -39,9 +37,8 @@ body{margin:0;background:#0a1628;color:#fff;font-family:Arial;padding-bottom:80p
 <div class="checkin" onclick="dailyCheck()" id="checkBox">
 <div style="font-size:18px">📅 Daily Check-in</div>
 <div id="checktxt" style="font-size:13px;margin-top:4px;font-weight:normal">Tap to claim +20 Points</div>
-<div id="streak" style="font-size:12px;margin-top:4px;opacity:.9">🔥 Streak: 0 days</div>
+<div id="streak" style="font-size:12px;margin-top:4px">🔥 Streak: 0 days</div>
 </div>
-
 <div class="card">
 <div style="font-size:15px;margin-bottom:10px">Watch ads, earn points. Convert to USDT after 40 days</div>
 <button class="btn" onclick="watchAd()">▶️ Watch Ad & Earn 20 Points</button>
@@ -51,110 +48,7 @@ body{margin:0;background:#0a1628;color:#fff;font-family:Arial;padding-bottom:80p
 </div>
 
 <div id="tasks" class="page">
-<h3 style="color:#00aaff">📋 Task — Earn 50 Points</h3>
-
+<h3 style="color:#00aaff">📋 Tasks</h3>
 <div class="task" id="task-join">
-<div style="text-align:left"><b>Join Channel</b><br><small style="color:#7aa0cc">Join @BlunbozChannel</small><br><small style="color:#00ff88">+50 Points</small></div>
-<button class="btn" style="width:auto;padding:10px 20px" id="joinBtn" onclick="openChannel()">Join</button>
-</div>
-
-<p style="font-size:11px;opacity:.5;text-align:center;margin-top:15px">* Task can only be done once. Must join channel to claim.</p>
-</div>
-
-<div id="refer" class="page">
-<div class="card">
-<h3 style="color:#00aaff">👥 Refer & Earn</h3>
-<p>Get 10% of friends points forever!</p>
-<p id="reflink" style="background:#0a1628;padding:12px;border-radius:10px;font-size:11px;word-break:break-all;border:1px solid #1d3c6e">https://t.me/BlunbozearnusdtBot/blunboz</p>
-<button class="btn" onclick="navigator.clipboard.writeText(document.getElementById('reflink').innerText);alert('Copied!')">Copy Refer Link</button>
-</div>
-</div>
-
-<div id="wallet" class="page">
-<div class="card">
-<h3 style="color:#00aaff">💳 Wallet</h3>
-<h2 id="bal2" style="font-size:36px;color:#00aaff">0 POINTS</h2>
-<div class="lock" id="lockmsg">🔒 Withdraw Locked — Airdrop ends in 39 days<br><span style="font-size:24px">🔐</span></div>
-<button class="btn" id="withBtn" disabled>🔒 Withdraw Locked (39 days)</button>
-<p style="font-size:11px;opacity:.5;margin-top:12px">Points will auto-convert to USDT after 40 days. Rate revealed at end.</p>
-</div>
-</div>
-
-<div class="nav">
-<button onclick="openTab('home')" id="b-home" class="active">🏠<br>Home</button>
-<button onclick="openTab('tasks')" id="b-tasks">📋<br>Tasks</button>
-<button onclick="openTab('refer')" id="b-refer">👥<br>Refer</button>
-<button onclick="openTab('wallet')" id="b-wallet">💳<br>Wallet</button>
-</div>
-
-<script>
-// === YOUR CHANNEL LINK - EDIT THIS ===
-const CHANNEL_LINK = "https://t.me/BlunbozChannel";
-// =====================================
-
-const START_KEY='blun_start';
-let start=localStorage.getItem(START_KEY); if(!start){start=Date.now(); localStorage.setItem(START_KEY,start);}
-let balance=parseInt(localStorage.getItem('blun_pts')||'0');
-let count=parseInt(localStorage.getItem('blun_cnt')||'0');
-let lastDay=localStorage.getItem('blun_day')||new Date().toDateString();
-if(lastDay!==new Date().toDateString()){count=0; localStorage.setItem('blun_day',new Date().toDateString());}
-let doneTasks=JSON.parse(localStorage.getItem('blun_tasks')||'{}');
-let lastCheck=localStorage.getItem('blun_check')||'';
-let streak=parseInt(localStorage.getItem('blun_streak')||'0');
-
-function getDayNum(){return Math.min(40,Math.floor((Date.now()-parseInt(start))/(1000*60*60*24))+1);}
-function updateUI(){
- document.getElementById('bal').innerText=balance+' POINTS';
- document.getElementById('bal2').innerText=balance+' POINTS';
- document.getElementById('count').innerText=count;
- let d=getDayNum(); document.getElementById('dayinfo').innerText='Day '+d+'/40 — '+(40-d)+' days left';
- document.getElementById('bar').style.width=(d/40*100)+'%';
- document.getElementById('streak').innerText='🔥 Streak: '+streak+' days';
- document.getElementById('lockmsg').innerHTML=d<40?'🔒 Withdraw Locked — Airdrop ends in '+(40-d)+' days<br><span style="font-size:24px">🔐</span>':'✅ Unlocked — Ready to withdraw!<br><span style="font-size:24px">🔓</span>';
- document.getElementById('withBtn').disabled=d<40;
- document.getElementById('withBtn').innerText=d<40?'🔒 Withdraw Locked ('+(40-d)+' days left)':'💸 Withdraw Now';
- if(doneTasks['join']){ let el=document.getElementById('task-join'); el.classList.add('done'); document.getElementById('joinBtn').innerText='Done ✓'; document.getElementById('joinBtn').disabled=true; }
- let today=new Date().toDateString();
- if(lastCheck===today){ document.getElementById('checktxt').innerText='✅ Claimed today — Come back tomorrow'; document.getElementById('checkBox').style.animation='none'; document.getElementById('checkBox').style.opacity='.7'; }
-}
-updateUI();
-function openTab(t){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(t).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));document.getElementById('b-'+t).classList.add('active');}
-function watchAd(){
- if(count>=25){alert('Daily limit 25/25!');return;}
- document.getElementById('status').innerText='Loading ad...';
- if(typeof show_11933586==='function'){
-  show_11933586().then(()=>{balance+=20;count++;localStorage.setItem('blun_pts',balance);localStorage.setItem('blun_cnt',count);updateUI();document.getElementById('status').innerText='✅ +20 Points Earned!'; Telegram.WebApp.HapticFeedback.notificationOccurred('success');}).catch(()=>{document.getElementById('status').innerText='Closed early, try again';});
- } else {document.getElementById('status').innerText='Ad not ready, retry in 2 sec';}
-}
-function openChannel(){
- // REAL Telegram open — this WORKS inside mini app
- if(window.Telegram && Telegram.WebApp.openTelegramLink){
-   Telegram.WebApp.openTelegramLink(CHANNEL_LINK);
- } else if(window.Telegram && Telegram.WebApp.openLink){
-   Telegram.WebApp.openLink(CHANNEL_LINK);
- } else {
-   window.open(CHANNEL_LINK,'_blank');
- }
- if(doneTasks['join']){alert('Already claimed!');return;}
- // Give reward after 2 sec with confirm
- setTimeout(()=>{
-   if(confirm('Did you join '+CHANNEL_LINK+' ?\nClick OK to claim +50 Points')){
-     doneTasks['join']=true;
-     localStorage.setItem('blun_tasks',JSON.stringify(doneTasks));
-     balance+=50; localStorage.setItem('blun_pts',balance);
-     updateUI(); alert('✅ +50 Points added!');
-   }
- },1800);
-}
-function dailyCheck(){
- let today=new Date().toDateString();
- if(lastCheck===today){alert('Already checked today!');return;}
- lastCheck=today; localStorage.setItem('blun_check',today);
- streak++; localStorage.setItem('blun_streak',streak);
- balance+=20; localStorage.setItem('blun_pts',balance);
- updateUI(); alert('✅ Daily +20 Points! Streak: '+streak+' days');
- Telegram.WebApp.HapticFeedback.notificationOccurred('success');
-}
-if(window.Telegram && Telegram.WebApp.initDataUnsafe.user){let uid=Telegram.WebApp.initDataUnsafe.user.id;document.getElementById('reflink').innerText='https://t.me/BlunbozearnusdtBot/blunboz?start='+uid;}
-</script>
-</body></html>
+<div style="text-align:left"><b>Join Channel</b><br><small style="color:#7aa0cc">@blunbozearn</small><br><small style="color:#00ff88">+50 Points</small></div>
+<button class="btn"

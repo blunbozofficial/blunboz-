@@ -1,21 +1,44 @@
 <!DOCTYPE html>
-<html><head>
+<html>
+<head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>BLUNBOZ - 40 Days Airdrop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BLUNBOZ</title>
 <script src='//libtl.com/sdk.js' data-zone='11933586' data-sdk='show_11933586'></script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#070f20;color:#fff;font-family:Arial;padding-bottom:90px;min-height:100vh}
-.header{text-align:center;padding:22px;background:linear-gradient(135deg,#0a4da1,#0088ff);border-radius:0 0 24px 24px}
-#bal{font-size:44px;font-weight:bold;margin:8px}
-.progress{margin-top:10px;background:rgba(0,0,0,.4);border-radius:20px;height:10px;overflow:hidden}
-#bar{height:100%;background:#fff;width:2%}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a1628;color:#fff;font-family:Arial;padding-bottom:85px;min-height:100vh}
+.header{background:linear-gradient(135deg,#0a4da1,#0088ff);padding:22px;text-align:center;border-radius:0 0 24px 24px}
+#bal{font-size:44px;font-weight:bold;margin:8px 0}
+.progress{height:10px;background:rgba(0,0,0,0.4);border-radius:20px;margin-top:10px;overflow:hidden}
+#bar{height:100%;width:5%;background:#fff}
 .page{display:none;padding:16px}.page.active{display:block}
-.card{background:#132a4d;padding:20px;border-radius:18px;margin:12px 0;text-align:center;border:1px solid #1d3c6e}
+.card{background:#132a4d;border:1px solid #1d3c6e;border-radius:18px;padding:20px;margin:12px 0;text-align:center}
 .btn{background:linear-gradient(135deg,#0088ff,#00aaff);color:#fff;border:none;padding:14px;border-radius:14px;font-weight:bold;width:100%;font-size:16px}
-.btn:disabled{background:#1a2f4d;color:#5a7aaa}
-.lock{background:#0f2744;border:1px dashed #2a5a9a;padding:12px;border-radius:12px;margin:12px 0;color:#8ab4ff}
-.checkin{background:linear-gradient(135deg,#0088ff,#00ccff);padding:18px;border-radius:18px;margin:12px 0;text-align:center;font-weight:bold;animation:shake 2s infinite}
-@keyframes shake{0%,100%{transform:rotate(0)}10%{transform
+.btn:disabled{background:#1a2f4d;color:#6a8ab0}
+.checkin{background:linear-gradient(135deg,#0088ff,#00ccff);padding:18px;border-radius:18px;margin:12px 0;text-align:center;font-weight:bold}
+.task{background:#112240;border:1px solid #1d3c6e;padding:16px;border-radius:14px;margin:12px 0;display:flex;justify-content:space-between;align-items:center}
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;height:75px;background:#0b1f3d;display:flex;z-index:99999;border-top:2px solid #1e4f8a}
+.bottom-nav button{flex:1;background:none;border:none;color:#7fb0e0;font-size:13px;font-weight:bold}
+.bottom-nav button.active{color:#00aaff;background:#12305f}
+.lock{border:1px dashed #2a5a9a;padding:12px;border-radius:12px;color:#8ab4ff;margin:10px 0}
+</style>
+</head>
+<body>
+<div class="header">
+<div style="font-weight:bold;letter-spacing:2px">💎 BLUNBOZ</div>
+<div style="font-size:12px;opacity:0.8">40 DAYS AIRDROP</div>
+<div id="bal">0 POINTS</div>
+<div id="dayinfo" style="font-size:13px">Day 1/40 - 39 days left</div>
+<div class="progress"><div id="bar"></div></div>
+</div>
+<div id="home" class="page active">
+<div class="checkin" id="checkBox" onclick="dailyCheck()">
+<div>📅 Daily Check-in</div>
+<div id="checktxt" style="font-weight:normal;font-size:13px">Tap to claim +20 Points</div>
+<div id="streak" style="font-size:12px">🔥 Streak: 0 days</div>
+</div>
+<div class="card">
+<p style="margin-bottom:12px">Watch ads, earn points. Convert to USDT after 40 days</p>
+<button class="btn" onclick
